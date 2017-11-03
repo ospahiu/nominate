@@ -9,4 +9,5 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)  # To propagate changes.
+    print("Hello World")
+    # app.run(debug=True)  # To propagate changes.
