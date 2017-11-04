@@ -1,4 +1,5 @@
 import random
+import time
 from collections import defaultdict
 
 import numpy as np
@@ -23,50 +24,62 @@ class Movie:
     def __init__(self, id):
         self.id = id
         self.title = "Movie {}".format(id)
-        self.ratings = defaultdict(int)
+        self.ratings = defaultdict(int)  # Users who rated this, and their rating.
 
     def __str__(self):
         return "{} - Ratings: {}".format(self.title, self.ratings)
 
 class User:
-    def __init__(self, id, first_name):
+    def __init__(self, id):
         self.id = id
-        self.first_name = first_name
-        self.last_name = None
-        self.email = None
-        self.ratings = {}
+        self.name = "User {}".format(id)
+        self.ratings = defaultdict(int)  # Movies the user rated, and their rating.
 
     def __str__(self):
-        return "User {}".format(self.first_name)
+        return "{} - Ratings {}".format(self.name, self.ratings)
 
 
-movies = []  # 10 movies that exist.
-for i in range(10):
-    users_picked = [random.randrange(10) for _ in range(random.randrange(10))]
-    movie = Movie(i)
-    movie.ratings = {user: random.randrange(1, 6) for user in users_picked}
-    movies.append(movie)
-users = []  # All users that exist.
+def generate_test_data(N=100):
+    users = [User(i) for i in range(N)]  # 100 users exist.
+    movies = [Movie(i) for i in range(N)]  # 100 movies exist.
+    for movie_id in range(N):  # Iterate through movies.
+        users_picked = {random.randrange(N) for _ in range(random.randrange(N))}
+        movie_ratings = {}
+        for user in users_picked:
+            rating = random.randrange(1, 6)
+            movie_ratings[user] = rating
+            users[user].ratings[movie_id] = rating
+        movies[movie_id].ratings = movie_ratings
+    return users, movies
+
+
+users, movies = generate_test_data()
 
 # for movie in movies:
 #     print(movie)
 
+# 1 First algorithm.
+start = time.time()
 item_item_matrix = []
 for movie_i in movies:
     movie_scores = []
     for movie_j in movies:
         users_that_rated_both_movies = movie_i.ratings.keys() & movie_j.ratings.keys()
-        rating_i_vector = [movie_i.ratings[user] for user in movie_i.ratings.keys() if
+        rating_i_vector = [movie_i.ratings[user] for user in movie_i.ratings if
                            user in users_that_rated_both_movies]
-        rating_j_vector = [movie_j.ratings[user] for user in movie_j.ratings.keys() if
+        rating_j_vector = [movie_j.ratings[user] for user in movie_j.ratings if
                            user in users_that_rated_both_movies]
-        print('(', movie_i.id, movie_j.id, ')', 'Users who rated both:', users_that_rated_both_movies, rating_i_vector,
-              rating_j_vector)
+        # print('(', movie_i.id, movie_j.id, ')', 'Users who rated both:', users_that_rated_both_movies, rating_i_vector, rating_j_vector)
 
         cos_score = cos_sim(rating_i_vector, rating_j_vector)
         # print(rating_j_vector, rating_j_vector, cos_score)
         movie_scores.append(cos_score)
     item_item_matrix.append(movie_scores)
+
+end = time.time()
+
+print("Algorithm #1", end - start)
+
 
 for movie_scores in item_item_matrix:
     print(movie_scores)
