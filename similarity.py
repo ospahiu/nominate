@@ -56,6 +56,7 @@ def generate_test_data(N=100):
 
 users, movies = generate_test_data()
 
+
 # for movie in movies:
 #     print(movie)
 
@@ -129,24 +130,52 @@ print(predict_rating(user, movie))
 
 conn = sqlite3.connect('nominate.db')
 c = conn.cursor()
-# for item in my_list:
+genres = {"Action": 1,
+          "Adventure": 2,
+          "Animation": 3,
+          "Children": 4,
+          "Comedy": 5,
+          "Crime": 6,
+          "Documentary": 7,
+          "Drama": 8,
+          "Fantasy": 9,
+          "Film-Noir": 10,
+          "Horror": 11,
+          "IMAX": 12,
+          "Musical": 13,
+          "Mystery": 14,
+          "Romance": 15,
+          "Sci-Fi": 16,
+          "Thriller": 17,
+          "War": 18,
+          "Western": 19}
 
+for user in users:
+    for movie_id, rating in user.ratings.items():
+        items = user.id, movie_id + 1, rating
+        # items = (1,)
+        c.execute('INSERT INTO ratings (userid, movieid, rating) VALUES (?,?,?)', items)
 
-with open("/Users/ospahiu/Downloads/ml-20m 2/movies.csv", 'r') as movies:
-    count = 0
-    next(movies)
-    for line in movies:
-        parsed_movie_line = line.split(',')
-        print(parsed_movie_line)
-        id = parsed_movie_line,
-        title = (parsed_movie_line[1].strip(),)
+#
+# with open("/Users/ospahiu/Downloads/ml-20m 2/movies.csv", 'r') as movies:
+#     count = 0
+#     next(movies)
+#     for line in movies:
+#         parsed_movie_line = line.split(',')
+#         # print(parsed_movie_line)
+#         id = parsed_movie_line[0],
+#         title = parsed_movie_line[1].strip()
+#         movie_genres = parsed_movie_line[-1].split('|')
+#         # print(parsed_movie_line)
+#         # print(movie_genres)
+#         for movie_genre in movie_genres:
+#             print(id, genres[movie_genre.strip()])
+#             # c.execute('INSERT INTO movie_genres (movieid, genreid) VALUES (?,?)', (int(id[0]), genres[movie_genre.strip()]))
+#         count += 1
+#         if count == 99:
+#             break
 
-        # c.execute('INSERT INTO movies (title) VALUES (?)', title)
-        count += 1
-        if count == 99:
-            break
-
-# conn.commit()
+conn.commit()
 conn.close()
 
 
