@@ -59,46 +59,67 @@ users, movies = generate_test_data()
 #     print(movie)
 
 # 1 First algorithm.
+# start = time.time()
+# item_item_matrix = []
+# for movie_i in movies:
+#     movie_scores = []
+#     for movie_j in movies:
+#         users_that_rated_both_movies = movie_i.ratings.keys() & movie_j.ratings.keys()
+#         cos_score = 'nan'
+#         if users_that_rated_both_movies:
+#             rating_i_vector = [movie_i.ratings[user] for user in movie_i.ratings if
+#                                user in users_that_rated_both_movies]
+#             rating_j_vector = [movie_j.ratings[user] for user in movie_j.ratings if
+#                                user in users_that_rated_both_movies]
+#             cos_score = cos_sim(rating_i_vector, rating_j_vector)
+#         movie_scores.append(cos_score)
+#     item_item_matrix.append(movie_scores)
+#
+# end = time.time()
+#
+# print("Algorithm #1", end - start)
+
+# -----------------------------------------------------------------------------
+
+# 2 Second algorithm.
+
+def compute_item_based_similarity_model(users, movies):
+    item_item_matrix = defaultdict(int)
+
+    for movie in movies:
+        current_movie_ratings_to_per_shared_users = defaultdict(list)
+        ratings_to_compare_to_per_shared_users = defaultdict(list)
+
+        for user_id, rating in movie.ratings.items():  # Customers that bought Product 1
+            for movie_id_bought_by_user, rating_j in users[user_id].ratings.items():
+                if user_id in movies[movie_id_bought_by_user].ratings:
+                    current_movie_ratings_to_per_shared_users[movie_id_bought_by_user].append(rating)
+                    ratings_to_compare_to_per_shared_users[movie_id_bought_by_user].append(rating_j)
+
+        for movie_id, ratings in ratings_to_compare_to_per_shared_users.items():
+            similarity_score = cos_sim(current_movie_ratings_to_per_shared_users[movie_id], ratings)
+            item_item_matrix[(movie.id, movie_id)] = similarity_score
+    return item_item_matrix
+
 start = time.time()
-item_item_matrix = []
-for movie_i in movies:
-    movie_scores = []
-    for movie_j in movies:
-        users_that_rated_both_movies = movie_i.ratings.keys() & movie_j.ratings.keys()
-        rating_i_vector = [movie_i.ratings[user] for user in movie_i.ratings if
-                           user in users_that_rated_both_movies]
-        rating_j_vector = [movie_j.ratings[user] for user in movie_j.ratings if
-                           user in users_that_rated_both_movies]
-        # print('(', movie_i.id, movie_j.id, ')', 'Users who rated both:', users_that_rated_both_movies, rating_i_vector, rating_j_vector)
-
-        cos_score = cos_sim(rating_i_vector, rating_j_vector)
-        # print(rating_j_vector, rating_j_vector, cos_score)
-        movie_scores.append(cos_score)
-    item_item_matrix.append(movie_scores)
-
+print(len(compute_item_based_similarity_model(users=users, movies=movies)))
 end = time.time()
 
-print("Algorithm #1", end - start)
+print("Algorithm #2", end - start)
+
+# print(item_item_matrix)
+# len_items = len([ item for l in item_item_matrix for item in l if item != 'nan'])
+# print(item_item_matrix_2)
+# print(len(item_item_matrix_2), len_items)
 
 
-for movie_scores in item_item_matrix:
-    print(movie_scores)
-for movie in movies:
-    print(movie)
-
-
-# for i in range(10):
-#     movies_picked = [random.randrange(10) for _ in range(random.randrange(10))]
-#     user = User(i, "User {}".format(i))
-#     user.ratings = {movie: random.randrange(1, 6) for movie in movies_picked}
-#     users.append(user)
-
-# user_movie_matrix = []
-# for user in users:
-#     user_ratings = []
-#     print(user)
-#     for movie in movies:
-#         user_ratings.append(user.ratings.get(movie, '?'))
-#     user_movie_matrix.append(user_ratings)
-# print(sorted(movies))
-# print(np.matrix(user_movie_matrix))
+# print("----------------Test cases ---------------")
+# print("Test Case 1:", item_item_matrix[22][99], item_item_matrix_2[(22, 99)])
+# print("Test Case 2:", item_item_matrix[15][87], item_item_matrix_2[(15, 87)])
+# print("Test Case 3:", item_item_matrix[99][66], item_item_matrix_2[(99, 66)] if item_item_matrix_2[(99, 66)] != 0 else 'nan')
+# print("Test Case 4:", item_item_matrix[91][0] , item_item_matrix_2[(91, 0)])
+# print("Test Case 4:", item_item_matrix[67][95] , item_item_matrix_2[(67, 95)])
+# print("Test Case 4:", item_item_matrix[73][23] , item_item_matrix_2[(73, 23)])
+# print("Test Case 4:", item_item_matrix[51][8] , item_item_matrix_2[(51, 8)])
+# print("Test Case 4:", item_item_matrix[42][79] , item_item_matrix_2[(42, 79)])
+# print("Test Case 4:", item_item_matrix[10][7] , item_item_matrix_2[(10, 7)])
