@@ -22,67 +22,97 @@ def cos_sim(vector_i, vector_j):
 
 
 class Movie:
-    def __init__(self, id):
+    def __init__(self, id, title, director, plot, year):
         self.id = id
-        self.title = "Movie {}".format(id)
+        self.title = title
+        self.director = director
+        self.plot = plot
+        self.year = year
         self.ratings = defaultdict(int)  # Users who rated this, and their rating.
 
     def __str__(self):
         return "{} - Ratings: {}".format(self.title, self.ratings)
 
 class User:
-    def __init__(self, id):
+    def __init__(self, id, username, passcode):
         self.id = id
-        self.name = "User {}".format(id)
+        self.username = username
+        self.passcode = passcode
         self.ratings = defaultdict(int)  # Movies the user rated, and their rating.
 
     def __str__(self):
-        return "{} - Ratings {}".format(self.name, self.ratings)
+        return "{} - Ratings {}".format(self.username, self.ratings)
 
 
-def generate_test_data(N=100):
-    users = [User(i) for i in range(N)]  # 100 users exist.
-    movies = [Movie(i) for i in range(N)]  # 100 movies exist.
-    for movie_id in range(N):  # Iterate through movies.
-        users_picked = {random.randrange(N) for _ in range(random.randrange(N))}
-        movie_ratings = {}
-        for user in users_picked:
-            rating = random.randrange(1, 6)
-            movie_ratings[user] = rating
-            users[user].ratings[movie_id] = rating
-        movies[movie_id].ratings = movie_ratings
-    return users, movies
-
-
-users, movies = generate_test_data()
-
-
-# for movie in movies:
-#     print(movie)
-
-# 1 First algorithm.
-# start = time.time()
-# item_item_matrix = []
-# for movie_i in movies:
-#     movie_scores = []
-#     for movie_j in movies:
-#         users_that_rated_both_movies = movie_i.ratings.keys() & movie_j.ratings.keys()
-#         cos_score = 'nan'
-#         if users_that_rated_both_movies:
-#             rating_i_vector = [movie_i.ratings[user] for user in movie_i.ratings if
-#                                user in users_that_rated_both_movies]
-#             rating_j_vector = [movie_j.ratings[user] for user in movie_j.ratings if
-#                                user in users_that_rated_both_movies]
-#             cos_score = cos_sim(rating_i_vector, rating_j_vector)
-#         movie_scores.append(cos_score)
-#     item_item_matrix.append(movie_scores)
+# def generate_test_data(N=100):
+#     users = [User(i) for i in range(N)]  # 100 users exist.
+#     movies = [Movie(i) for i in range(N)]  # 100 movies exist.
+#     for movie_id in range(N):  # Iterate through movies.
+#         users_picked = {random.randrange(N) for _ in range(random.randrange(N))}
+#         movie_ratings = {}
+#         for user in users_picked:
+#             rating = random.randrange(1, 6)
+#             movie_ratings[user] = rating
+#             users[user].ratings[movie_id] = rating
+#         movies[movie_id].ratings = movie_ratings
+#     return users, movies
 #
-# end = time.time()
 #
-# print("Algorithm #1", end - start)
 
-# -----------------------------------------------------------------------------
+conn = sqlite3.connect('nominate.db')
 
+
+def get_all_movies(connection):
+    movies = {}
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM movies")
+    rows = cursor.fetchall()
+    for movie_result in rows:
+        movie = Movie(*movie_result)
+        cursor.execute("SELECT userid, rating FROM ratings WHERE movieid=?", (movie.id,))
+        ratings = cursor.fetchall()
+        for user_id, rating in ratings:
+            movie.ratings[user_id] = rating
+        movies[movie.id] = movie
+        # print(movie)
+    return movies
+
+
+def get_all_users(connection):
+    users = {}
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM users")
+    rows = cursor.fetchall()
+    for user_result in rows:
+        user = User(*user_result)
+        cursor.execute("SELECT movieid, rating FROM ratings WHERE userid=?", (user.id,))
+        ratings = cursor.fetchall()
+        for movieid, rating in ratings:
+            user.ratings[movieid] = rating
+        users[user.id] = user
+        # print(movie)
+    return users
+
+
+def get_user_by_id(connection, id):
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users WHERE userid=?", (id,))
+    result = cursor.fetchone()
+    return User(*result) if result else None
+
+
+def get_movie_by_id(connection, id):
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM movies WHERE movieid=?", (id,))
+    result = cursor.fetchone()
+    return Movie(*result) if result else None
+
+
+movies = get_all_movies(conn)
+users = get_all_users(conn)
+conn.close()
+
+print(users[4])
 # 2 Second algorithm.
 
 def compute_item_based_similarity_model(users, movies):
@@ -104,19 +134,20 @@ def compute_item_based_similarity_model(users, movies):
     return item_item_matrix
 
 start = time.time()
-item_item_matrix = compute_item_based_similarity_model(users=users, movies=movies)
-print(len(item_item_matrix))
+# item_item_matrix = compute_item_based_similarity_model(users=users, movies=movies)
+# print(len(item_item_matrix))
 end = time.time()
 
 print("Algorithm #2", end - start)
 
-user = users[0]
-movie = movies[3]
+
+# user = users[0]
+# movie = movies[3]
 
 
 # print(user, movie)
 
-def predict_rating(user, movie):
+def predict_rating(user, movie, item_item_matrix):
     weighted_sum = 0
     similarity_sum = 0
     for movie_id, rating in user.ratings.items():
@@ -125,36 +156,14 @@ def predict_rating(user, movie):
         similarity_sum += similarity
     return weighted_sum / similarity_sum  # Returns prediction for given user and movie.
 
+# print(predict_rating(user, movie))
 
-print(predict_rating(user, movie))
 
-conn = sqlite3.connect('nominate.db')
-c = conn.cursor()
-genres = {"Action": 1,
-          "Adventure": 2,
-          "Animation": 3,
-          "Children": 4,
-          "Comedy": 5,
-          "Crime": 6,
-          "Documentary": 7,
-          "Drama": 8,
-          "Fantasy": 9,
-          "Film-Noir": 10,
-          "Horror": 11,
-          "IMAX": 12,
-          "Musical": 13,
-          "Mystery": 14,
-          "Romance": 15,
-          "Sci-Fi": 16,
-          "Thriller": 17,
-          "War": 18,
-          "Western": 19}
 
-for user in users:
-    for movie_id, rating in user.ratings.items():
-        items = user.id + 1, movie_id + 1, rating
+# for username in usernames:
+
         # items = (1,)
-        # c.execute('INSERT INTO ratings (userid, movieid, rating) VALUES (?,?,?)', items)
+# c.execute('INSERT INTO users (username) VALUES (?)', (username,))
 
 #
 # with open("/Users/ospahiu/Downloads/ml-20m 2/movies.csv", 'r') as movies:
@@ -175,8 +184,7 @@ for user in users:
 #         if count == 99:
 #             break
 
-conn.commit()
-conn.close()
+
 
 
 # print(item_item_matrix)
@@ -195,3 +203,125 @@ conn.close()
 # print("Test Case 4:", item_item_matrix[51][8] , item_item_matrix_2[(51, 8)])
 # print("Test Case 4:", item_item_matrix[42][79] , item_item_matrix_2[(42, 79)])
 # print("Test Case 4:", item_item_matrix[10][7] , item_item_matrix_2[(10, 7)])
+
+# genres = {"Action": 1,
+#           "Adventure": 2,
+#           "Animation": 3,
+#           "Children": 4,
+#           "Comedy": 5,
+#           "Crime": 6,
+#           "Documentary": 7,
+#           "Drama": 8,
+#           "Fantasy": 9,
+#           "Film-Noir": 10,
+#           "Horror": 11,
+#           "IMAX": 12,
+#           "Musical": 13,
+#           "Mystery": 14,
+#           "Romance": 15,
+#           "Sci-Fi": 16,
+#           "Thriller": 17,
+#           "War": 18,
+#           "Western": 19}
+#
+#
+# usernames = ["AlertQuant",
+# "Annadayer",
+# "ArticlesPhat",
+# "Atmellibi",
+# "Beamburd",
+# "BeastEpicReport",
+# "Blervite",
+# "BlueGame",
+# "Bottlemed",
+# "BuddieFluent",
+# "Bufficoner",
+# "Camella",
+# "CanyonsReport",
+# "Capolassed",
+# "Carteriher",
+# "Celkage",
+# "Cleverrylh",
+# "CoverCist",
+# "Curabouc",
+# "DanceCountry",
+# "Deriells",
+# "Diagonaleu",
+# "Diumphon",
+# "Drakergile",
+# "Dramours",
+# "Draventroo",
+# "Etchicide",
+# "Faegoric",
+# "FinestFashion",
+# "Firstilli",
+# "Foprisom",
+# "Freextech",
+# "Fusional",
+# "Gameriusaro",
+# "Gausefra",
+# "GetVander",
+# "Griffonli",
+# "HaroLovely",
+# "Heidexpe",
+# "HolyCleverDailies",
+# "HomeyGrand",
+# "HumanSlim",
+# "Hydrain",
+# "InloveWil",
+# "IzPenguin",
+# "JameYounger",
+# "Keeperzesi",
+# "Kennaut",
+# "Kurocktati",
+# "Landerra",
+# "Lapilorth",
+# "Lastinghall",
+# "LatestTara",
+# "Limerivell",
+# "Matibign",
+# "MessageStronger",
+# "MonkeyAlly",
+# "MoTinnysMountain",
+# "MountainBig",
+# "MrPlace",
+# "Nanores",
+# "NearlyRunning",
+# "NephewBWith",
+# "Nepheworal",
+# "Novamrofo",
+# "PatAni",
+# "PersonDaily",
+# "Phatorksta",
+# "Phiaenette",
+# "PinCrawler",
+# "Pingotepl",
+# "ProAce",
+# "ReallyPassion",
+# "Reincock",
+# "Reporterao",
+# "RobCinco",
+# "Roltast",
+# "RomanticMessages",
+# "Saltendo",
+# "SarenPuppyNephew",
+# "Seekellaher",
+# "ShatQuoteCart",
+# "ShayFlashTeenage",
+# "Shutotrol",
+# "Singhillet",
+# "Soillpbx",
+# "Sparketpipe",
+# "Specialsie",
+# "SpecialsRocker",
+# "Starticle",
+# "Steadem",
+# "StroonsBoyUpdate",
+# "Subgenven",
+# "Synoline",
+# "Tearmation",
+# "TheborgSolomon",
+# "ThugGuy",
+# "TimesThega",
+# "Toyoneymacy",
+# "UpdateAlly"]
