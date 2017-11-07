@@ -3,61 +3,10 @@ import sqlite3
 import time
 from collections import defaultdict
 
-import numpy as np
+from nominate.models import Movie, User
+from nominate.utilities import cos_sim
 
 random.seed(1)  # Consistent test data.
-
-
-def cos_sim(vector_i, vector_j):
-    """
-    Simple cosine similarity formula implemented using length normalization.
-    Numpy is used to perform norm, and dot product operations on the vectors.
-    :param document_i: document vector
-    :param query_vector: query vector
-    :return: cosine of the angle between the query and document vector
-    """
-    A = np.array(vector_i)
-    B = np.array(vector_j)
-    return np.dot(A, B) / (np.linalg.norm(A) * np.linalg.norm(B))
-
-
-class Movie:
-    def __init__(self, id, title, director, plot, year):
-        self.id = id
-        self.title = title
-        self.director = director
-        self.plot = plot
-        self.year = year
-        self.ratings = defaultdict(int)  # Users who rated this, and their rating.
-
-    def __str__(self):
-        return "{} - Ratings: {}".format(self.title, self.ratings)
-
-class User:
-    def __init__(self, id, username, passcode):
-        self.id = id
-        self.username = username
-        self.passcode = passcode
-        self.ratings = defaultdict(int)  # Movies the user rated, and their rating.
-
-    def __str__(self):
-        return "{} - Ratings {}".format(self.username, self.ratings)
-
-
-# def generate_test_data(N=100):
-#     users = [User(i) for i in range(N)]  # 100 users exist.
-#     movies = [Movie(i) for i in range(N)]  # 100 movies exist.
-#     for movie_id in range(N):  # Iterate through movies.
-#         users_picked = {random.randrange(N) for _ in range(random.randrange(N))}
-#         movie_ratings = {}
-#         for user in users_picked:
-#             rating = random.randrange(1, 6)
-#             movie_ratings[user] = rating
-#             users[user].ratings[movie_id] = rating
-#         movies[movie_id].ratings = movie_ratings
-#     return users, movies
-#
-#
 
 conn = sqlite3.connect('nominate.db')
 
@@ -187,7 +136,7 @@ def compute_predictive_ratings(users, movies, item_item_matrix):
 
 
 print(compute_predictive_ratings(users, movies, item_item_matrix))
-dump_predictive_ratings_matrix(conn, compute_predictive_ratings(users, movies, item_item_matrix))
+
 conn.close()
 
 
