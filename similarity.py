@@ -140,25 +140,31 @@ print(item_item_matrix)
 print(len(item_item_matrix))
 end = time.time()
 
-cursor = conn.cursor()
-for (movie_i, movie_j), cosine_similarity_score in item_item_matrix.items():
-    # print(float(cosine_similarity_score))
-    # print(type(movie_i), type(movie_j), type(float(cosine_similarity_score)))
-    items = movie_i, movie_j, float(cosine_similarity_score)
-    # cursor.execute('INSERT INTO similarities (movieid_i, movieid_j, cosine_similarity_score) VALUES (?,?,?)', items)
-    # print(movie_i, movie_j, cosine_similarity_score)
 
-conn.commit()
-conn.close()
+def dump_item_to_item_matrix(connection, item_item_matrix):
+    cursor = connection.cursor()
+    for (movie_i, movie_j), cosine_similarity_score in item_item_matrix.items():
+        items = movie_i, movie_j, float(cosine_similarity_score)
+        cursor.execute('INSERT INTO similarities (movieid_i, movieid_j, cosine_similarity_score) VALUES (?,?,?)', items)
+    connection.commit()
+
+
+def dump_predictive_ratings_matrix(connection, predictive_ratings):
+    cursor = connection.cursor()
+    for (user_id, movie_id), predictive_rating in predictive_ratings.items():
+        items = user_id, movie_id, predictive_rating
+        cursor.execute('INSERT INTO predictive_ratings (movieid, userid, predictive_rating) VALUES (?,?,?)', items)
+    connection.commit()
+
+
 
 
 print("Algorithm #2", end - start)
 
 user = users[1]
-movie = movies[3]
+movie = movies[1]
 
-
-# print(user, movie)
+print(user, movie)
 
 def predict_rating(user, movie, item_item_matrix):
     weighted_sum = 0
@@ -170,7 +176,20 @@ def predict_rating(user, movie, item_item_matrix):
     return weighted_sum / similarity_sum  # Returns prediction for given user and movie.
 
 
-print(predict_rating(user, movie, item_item_matrix))
+def compute_predictive_ratings(users, movies, item_item_matrix):
+    user_prediction_model = defaultdict(int)
+    for user_id, user in users.items():
+        for movie_id, movie in movies.items():
+            if movie_id not in user.ratings:
+                predictive_rating = predict_rating(user, movie, item_item_matrix)
+                user_prediction_model[(user_id, movie_id)] = predictive_rating
+    return user_prediction_model
+
+
+print(compute_predictive_ratings(users, movies, item_item_matrix))
+dump_predictive_ratings_matrix(conn, compute_predictive_ratings(users, movies, item_item_matrix))
+conn.close()
+
 
 
 
