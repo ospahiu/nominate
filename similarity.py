@@ -110,7 +110,7 @@ def get_movie_by_id(connection, id):
 
 movies = get_all_movies(conn)
 users = get_all_users(conn)
-conn.close()
+
 
 print(users[4])
 # 2 Second algorithm.
@@ -140,11 +140,22 @@ print(item_item_matrix)
 print(len(item_item_matrix))
 end = time.time()
 
+cursor = conn.cursor()
+for (movie_i, movie_j), cosine_similarity_score in item_item_matrix.items():
+    # print(float(cosine_similarity_score))
+    # print(type(movie_i), type(movie_j), type(float(cosine_similarity_score)))
+    items = movie_i, movie_j, float(cosine_similarity_score)
+    # cursor.execute('INSERT INTO similarities (movieid_i, movieid_j, cosine_similarity_score) VALUES (?,?,?)', items)
+    # print(movie_i, movie_j, cosine_similarity_score)
+
+conn.commit()
+conn.close()
+
+
 print("Algorithm #2", end - start)
 
-
-# user = users[0]
-# movie = movies[3]
+user = users[1]
+movie = movies[3]
 
 
 # print(user, movie)
@@ -158,7 +169,8 @@ def predict_rating(user, movie, item_item_matrix):
         similarity_sum += similarity
     return weighted_sum / similarity_sum  # Returns prediction for given user and movie.
 
-# print(predict_rating(user, movie))
+
+print(predict_rating(user, movie, item_item_matrix))
 
 
 
@@ -185,15 +197,6 @@ def predict_rating(user, movie, item_item_matrix):
 #         count += 1
 #         if count == 99:
 #             break
-
-
-
-
-# print(item_item_matrix)
-# len_items = len([ item for l in item_item_matrix for item in l if item != 'nan'])
-# print(item_item_matrix_2)
-# print(len(item_item_matrix_2), len_items)
-
 
 # print("----------------Test cases ---------------")
 print("Test Case 1:", item_item_matrix[(22, 99)])
