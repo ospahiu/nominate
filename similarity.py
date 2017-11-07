@@ -102,10 +102,30 @@ def compute_item_based_similarity_model(users, movies):
     return item_item_matrix
 
 start = time.time()
-print(len(compute_item_based_similarity_model(users=users, movies=movies)))
+item_item_matrix = compute_item_based_similarity_model(users=users, movies=movies)
+print(len(item_item_matrix))
 end = time.time()
 
 print("Algorithm #2", end - start)
+
+user = users[0]
+movie = movies[3]
+
+
+# print(user, movie)
+
+def predict_rating(user, movie):
+    weighted_sum = 0
+    similarity_sum = 0
+    for movie_id, rating in user.ratings.items():
+        similarity = item_item_matrix[(movie_id, movie.id)]
+        weighted_sum += rating * similarity
+        similarity_sum += similarity
+    return weighted_sum / similarity_sum  # Returns prediction for given user and movie.
+
+
+print(predict_rating(user, movie))
+
 
 # print(item_item_matrix)
 # len_items = len([ item for l in item_item_matrix for item in l if item != 'nan'])
