@@ -118,7 +118,7 @@ print(users[4])
 def compute_item_based_similarity_model(users, movies):
     item_item_matrix = defaultdict(int)
 
-    for movie in movies:
+    for movie_id, movie in movies.items():
         current_movie_ratings_to_per_shared_users = defaultdict(list)
         ratings_to_compare_to_per_shared_users = defaultdict(list)
 
@@ -133,9 +133,11 @@ def compute_item_based_similarity_model(users, movies):
             item_item_matrix[(movie.id, movie_id)] = similarity_score
     return item_item_matrix
 
+
 start = time.time()
-# item_item_matrix = compute_item_based_similarity_model(users=users, movies=movies)
-# print(len(item_item_matrix))
+item_item_matrix = compute_item_based_similarity_model(users=users, movies=movies)
+print(item_item_matrix)
+print(len(item_item_matrix))
 end = time.time()
 
 print("Algorithm #2", end - start)
@@ -194,15 +196,15 @@ def predict_rating(user, movie, item_item_matrix):
 
 
 # print("----------------Test cases ---------------")
-# print("Test Case 1:", item_item_matrix[22][99], item_item_matrix_2[(22, 99)])
-# print("Test Case 2:", item_item_matrix[15][87], item_item_matrix_2[(15, 87)])
-# print("Test Case 3:", item_item_matrix[99][66], item_item_matrix_2[(99, 66)] if item_item_matrix_2[(99, 66)] != 0 else 'nan')
-# print("Test Case 4:", item_item_matrix[91][0] , item_item_matrix_2[(91, 0)])
-# print("Test Case 4:", item_item_matrix[67][95] , item_item_matrix_2[(67, 95)])
-# print("Test Case 4:", item_item_matrix[73][23] , item_item_matrix_2[(73, 23)])
-# print("Test Case 4:", item_item_matrix[51][8] , item_item_matrix_2[(51, 8)])
-# print("Test Case 4:", item_item_matrix[42][79] , item_item_matrix_2[(42, 79)])
-# print("Test Case 4:", item_item_matrix[10][7] , item_item_matrix_2[(10, 7)])
+print("Test Case 1:", item_item_matrix[(22, 99)])
+print("Test Case 2:", item_item_matrix[(15, 87)])
+print("Test Case 3:", item_item_matrix[(99, 66)])
+print("Test Case 4:", item_item_matrix[(91, 0)])
+print("Test Case 4:", item_item_matrix[(67, 95)])
+print("Test Case 4:", item_item_matrix[(73, 23)])
+print("Test Case 4:", item_item_matrix[(51, 8)])
+print("Test Case 4:", item_item_matrix[(42, 79)])
+print("Test Case 4:", item_item_matrix[(10, 7)])
 
 # genres = {"Action": 1,
 #           "Adventure": 2,
