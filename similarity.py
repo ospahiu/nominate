@@ -1,4 +1,5 @@
 import random
+import sqlite3
 import time
 from collections import defaultdict
 
@@ -125,6 +126,28 @@ def predict_rating(user, movie):
 
 
 print(predict_rating(user, movie))
+
+conn = sqlite3.connect('nominate.db')
+c = conn.cursor()
+# for item in my_list:
+
+
+with open("/Users/ospahiu/Downloads/ml-20m 2/movies.csv", 'r') as movies:
+    count = 0
+    next(movies)
+    for line in movies:
+        parsed_movie_line = line.split(',')
+        print(parsed_movie_line)
+        id = parsed_movie_line,
+        title = (parsed_movie_line[1].strip(),)
+
+        # c.execute('INSERT INTO movies (title) VALUES (?)', title)
+        count += 1
+        if count == 99:
+            break
+
+# conn.commit()
+conn.close()
 
 
 # print(item_item_matrix)
