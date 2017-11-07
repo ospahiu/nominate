@@ -152,9 +152,9 @@ genres = {"Action": 1,
 
 for user in users:
     for movie_id, rating in user.ratings.items():
-        items = user.id, movie_id + 1, rating
+        items = user.id + 1, movie_id + 1, rating
         # items = (1,)
-        c.execute('INSERT INTO ratings (userid, movieid, rating) VALUES (?,?,?)', items)
+        # c.execute('INSERT INTO ratings (userid, movieid, rating) VALUES (?,?,?)', items)
 
 #
 # with open("/Users/ospahiu/Downloads/ml-20m 2/movies.csv", 'r') as movies:
