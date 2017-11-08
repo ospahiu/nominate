@@ -1,8 +1,9 @@
+# General files to ignore.
 .idea/*.iws
 .idea/task.xml
 .idea/workspace.xml
 
-# Sensitive files
+# Sensitive files.
 .idea/dataSources
 .idea/dataSources.ids
 .idea/dataSources.xml
@@ -10,3 +11,13 @@
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+
+# Distribution / packaging
+*.egg-info/
+.installed.cfg
+*.egg

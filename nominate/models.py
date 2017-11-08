@@ -1,6 +1,5 @@
 from collections import defaultdict
 
-
 class Movie:
     def __init__(self, id, title, director, plot, year):
         self.id = id

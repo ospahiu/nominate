@@ -1,3 +1,8 @@
+DEBUG = True
+HOST = '0.0.0.0'
+PORT = 5000
+DATABASE_NAME = 'nominate.db'
+
 # genres = {"Action": 1,
 #           "Adventure": 2,
 #           "Animation": 3,

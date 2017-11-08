@@ -16,7 +16,7 @@ def index():
     users = get_all_users(conn)
     all_movies = get_all_movies(conn)
 
-    return render_template('index.html', user="Olsi Spahiu has rated:",
+    return render_template('index.html', user="Olsi Spahiu",
                            movies=[movie for id, movie in all_movies.items() if id in users[1].ratings])
 
 
