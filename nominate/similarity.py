@@ -18,7 +18,7 @@ def get_all_movies(connection):
     rows = cursor.fetchall()
     for movie_result in rows:
         movie = Movie(*movie_result)
-        cursor.execute("SELECT userid, rating FROM ratings1 WHERE movieid=?", (movie.id,))
+        cursor.execute("SELECT userid, rating FROM ratings WHERE movieid=?", (movie.id,))
         ratings = cursor.fetchall()
         for user_id, rating in ratings:
             movie.ratings[user_id] = rating
@@ -34,7 +34,7 @@ def get_all_users(connection):
     rows = cursor.fetchall()
     for user_result in rows:
         user = User(*user_result)
-        cursor.execute("SELECT movieid, rating FROM ratings1 WHERE userid=?", (user.id,))
+        cursor.execute("SELECT movieid, rating FROM ratings WHERE userid=?", (user.id,))
         ratings = cursor.fetchall()
         for movieid, rating in ratings:
             user.ratings[movieid] = rating
