@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -14,40 +12,62 @@ class Movie(Base):
     plot = Column(String())
     year = Column(Integer)
     genres = relationship('MovieGenre', backref='movie')
+    ratings = relationship('Rating', backref='movie')
 
-    def __init__(self, id, title, director, plot, year, genres=None):
-        self.id = id
-        self.title = title
-        self.director = director
-        self.plot = plot
-        self.year = year
-        self.genres = genres
-        self.ratings = defaultdict(int)  # Users who rated this, and their rating.
+    # def __init__(self, id, title, director, plot, year, genres=None):
+    #     self.id = id
+    #     self.title = title
+    #     self.director = director
+    #     self.plot = plot
+    #     self.year = year
+    #     self.genres = genres
+    #     self.ratings = defaultdict(int)  # Users who rated this, and their rating.
 
-    def __str__(self):
-        return "<Id: {}, Title: {}, Genres {}".format(self.movieid, self.title, self.genres)
+    def __repr__(self):
+        return "<Id: {}, Title: {}, Genres {} \n{}".format(self.movieid, self.title, self.genres, self.ratings)
 
 
-class User:
-    def __init__(self, id, username, passcode):
-        self.id = id
-        self.username = username
-        self.passcode = passcode
-        self.ratings = defaultdict(int)  # Movies the user rated, and their rating.
+class Rating(Base):
+    __tablename__ = 'ratings'
+    ratingid = Column(Integer, primary_key=True)
+    userid = Column(Integer, ForeignKey('users.userid'))
+    movieid = Column(Integer, ForeignKey('movies.movieid'))
+    rating = Column(Integer, nullable=False)
 
-    def __str__(self):
-        return "{} - Ratings {}".format(self.username, self.ratings)
+    def __repr__(self):
+        return "<Id: {}, userid: {}, movieid: {}, rating: {}>".format(self.ratingid,
+                                                                      self.userid,
+                                                                      self.movieid,
+                                                                      self.rating)
+
+
+class User(Base):
+    __tablename__ = 'users'
+    userid = Column(Integer, primary_key=True)
+    username = Column(String(), nullable=False)
+    passcode = Column(String())
+    ratings = relationship('Rating', backref='user')
+
+    # def __init__(self, id, username, passcode):
+    #     self.id = id
+    #     self.username = username
+    #     self.passcode = passcode
+    #     self.ratings = defaultdict(int)  # Movies the user rated, and their rating.
+
+    def __repr__(self):
+        return "<Id: {}, Name: {}, Ratings: {}>".format(self.userid, self.username, self.ratings)
 
 
 class Genre(Base):
     __tablename__ = 'genres'
     genreid = Column(Integer, primary_key=True)
-    genre = Column(String())
+    genre = Column(String(), nullable=False)
 
-    def __init__(self, genre=None):
-        self.genre = genre
+    #
+    # def __init__(self, genre=None):
+    #     self.genre = genre
 
-    def __str__(self):
+    def __repr__(self):
         return '<Id: {}, Genre: {}>'.format(self.genreid, self.genre)
 
 
@@ -58,8 +78,8 @@ class MovieGenre(Base):
     genreid = Column(Integer, ForeignKey('genres.genreid'))
     genre = relationship('Genre', backref='movie_genres')
 
-    def __init__(self, genre=None):
-        self.genre = genre
+    # def __init__(self, genre=None):
+    #     self.genre = genre
 
     def __repr__(self):
         return '<Movie Id: {}, Genre Id: {}, Genre: {}>'.format(self.movieid, self.genreid, self.genre)
