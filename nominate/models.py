@@ -73,7 +73,7 @@ class Genre(Base):
 
 class MovieGenre(Base):
     __tablename__ = 'movie_genres'
-    movie_genresid = Column(Integer, primary_key=True)
+    movie_genreid = Column(Integer, primary_key=True)
     movieid = Column(Integer, ForeignKey('movies.movieid'))
     genreid = Column(Integer, ForeignKey('genres.genreid'))
     genre = relationship('Genre', backref='movie_genres')
