@@ -13,18 +13,19 @@ class Movie(Base):
     director = Column(String())
     plot = Column(String())
     year = Column(Integer)
-    genres = relationship('Genre', backref='movie')
+    genres = relationship('MovieGenre', backref='movie')
 
-    def __init__(self, id, title, director, plot, year):
+    def __init__(self, id, title, director, plot, year, genres=None):
         self.id = id
         self.title = title
         self.director = director
         self.plot = plot
         self.year = year
+        self.genres = genres
         self.ratings = defaultdict(int)  # Users who rated this, and their rating.
 
     def __str__(self):
-        return "{} - Ratings: {}".format(self.title, self.ratings)
+        return "<Id: {}, Title: {}, Genres {}".format(self.movieid, self.title, self.genres)
 
 
 class User:
@@ -54,4 +55,11 @@ class MovieGenre(Base):
     __tablename__ = 'movie_genres'
     movie_genresid = Column(Integer, primary_key=True)
     movieid = Column(Integer, ForeignKey('movies.movieid'))
-    genreid = Column(Integer)
+    genreid = Column(Integer, ForeignKey('genres.genreid'))
+    genre = relationship('Genre', backref='movie_genres')
+
+    def __init__(self, genre=None):
+        self.genre = genre
+
+    def __repr__(self):
+        return '<Movie Id: {}, Genre Id: {}, Genre: {}>'.format(self.movieid, self.genreid, self.genre)

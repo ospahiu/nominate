@@ -1,13 +1,8 @@
 from flask import render_template
 
 from nominate import app
-from nominate.models import Movie, User, Genre
 from nominate.database import db_session
-from flask import render_template
-
-from nominate import app
-from nominate.database import db_session
-from nominate.models import Movie, User, Genre
+from nominate.models import Movie, User
 
 
 @app.route("/")
@@ -20,9 +15,7 @@ def index():
     # users = get_all_users(conn)
     # all_movies = get_all_movies(conn)
 
-    print(Movie.query.all())
-
-    return render_template('index.html', user="Genres:", movies=Genre.query.all())
+    return render_template('index.html', user="Movies:", movies=Movie.query.all())
 
 
 @app.teardown_appcontext
