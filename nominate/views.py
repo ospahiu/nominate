@@ -1,24 +1,33 @@
-from sqlite3 import connect
-
 from flask import render_template
 
 from nominate import app
-from nominate.models import Movie, User
+from nominate.models import Movie, User, Genre
+from nominate.database import db_session
+from flask import render_template
+
+from nominate import app
+from nominate.database import db_session
+from nominate.models import Movie, User, Genre
 
 
 @app.route("/")
 def index():
-    conn = connect(app.config['DATABASE'])
+    # conn = connect(app.config['DATABASE'])
+    #
+    # cursor = conn.cursor()
+    # cursor.execute("SELECT * FROM movies")
+    #
+    # users = get_all_users(conn)
+    # all_movies = get_all_movies(conn)
 
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM movies")
+    print(Movie.query.all())
 
-    users = get_all_users(conn)
-    all_movies = get_all_movies(conn)
+    return render_template('index.html', user="Genres:", movies=Genre.query.all())
 
-    return render_template('index.html', user="Olsi Spahiu",
-                           movies=[movie for id, movie in all_movies.items() if id in users[1].ratings])
 
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
 
 def get_all_movies(connection):
     movies = {}
