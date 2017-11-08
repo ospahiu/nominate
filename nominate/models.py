@@ -60,12 +60,8 @@ class User(Base):
 
 class Genre(Base):
     __tablename__ = 'genres'
-    genreid = Column(Integer, primary_key=True)
-    genre = Column(String(), nullable=False)
-
-    #
-    # def __init__(self, genre=None):
-    #     self.genre = genre
+    genreid = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    genre = Column(String(), nullable=False, unique=True)
 
     def __repr__(self):
         return '<Id: {}, Genre: {}>'.format(self.genreid, self.genre)
@@ -73,13 +69,10 @@ class Genre(Base):
 
 class MovieGenre(Base):
     __tablename__ = 'movie_genres'
-    movie_genreid = Column(Integer, primary_key=True)
-    movieid = Column(Integer, ForeignKey('movies.movieid'))
-    genreid = Column(Integer, ForeignKey('genres.genreid'))
+    movie_genreid = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    movieid = Column(Integer, ForeignKey('movies.movieid'), nullable=False)
+    genreid = Column(Integer, ForeignKey('genres.genreid'), nullable=False)
     genre = relationship('Genre', backref='movie_genres')
-
-    # def __init__(self, genre=None):
-    #     self.genre = genre
 
     def __repr__(self):
         return '<Movie Id: {}, Genre Id: {}, Genre: {}>'.format(self.movieid, self.genreid, self.genre)
