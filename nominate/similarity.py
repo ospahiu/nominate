@@ -102,7 +102,7 @@ def dump_predictive_ratings_matrix(connection, predictive_ratings):
     cursor = connection.cursor()
     for (user_id, movie_id), predictive_rating in predictive_ratings.items():
         items = user_id, movie_id, predictive_rating
-        cursor.execute('INSERT INTO predictive_ratings (movieid, userid, predictive_rating) VALUES (?,?,?)', items)
+        cursor.execute('INSERT INTO predictive_ratings1 (movieid, userid, predictive_rating) VALUES (?,?,?)', items)
     connection.commit()
 
 
