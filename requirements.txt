@@ -3,6 +3,7 @@ Flask==0.12.2
 itsdangerous==0.24
 Jinja2==2.9.6
 MarkupSafe==1.0
+-e git+https://github.com/ospahiu/nominate.git@7d17b7de873c37cc534f3af0252bca7e35dc8e21#egg=nominate
 nose==1.3.7
 numpy==1.13.3
 pbr==3.1.1

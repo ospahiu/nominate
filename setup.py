@@ -1,13 +1,23 @@
-from flask import Flask, render_template
+from setuptools import setup
 
-app = Flask(__name__)
+# setup(
+#     name='nominate',
+#     packages=['nominate'],
+#     include_package_data=True,
+#     install_requires=[
+#         'flask',
+#     ],
+# )
+# #
 
 
-@app.route("/")
-def index():
-    return render_template('index.html')
-
-
-if __name__ == "__main__":
-    print("Hello World")
-    # app.run(debug=True)  # To propagate changes.
+# if __name__ == "__main__":
+setup(
+    name='nominate',
+    packages=['nominate'],
+    include_package_data=True,
+    install_requires=[
+        'flask',
+    ],
+)
+# app.run(host='0.0.0.0', port=5000, debug=True)

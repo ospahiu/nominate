@@ -8,7 +8,7 @@ from nominate.utilities import cos_sim
 
 random.seed(1)  # Consistent test data.
 
-conn = sqlite3.connect('nominate.db')
+conn = sqlite3.connect('nominate')
 
 
 def get_all_movies(connection):
@@ -142,30 +142,6 @@ conn.close()
 
 
 
-# for username in usernames:
-
-        # items = (1,)
-# c.execute('INSERT INTO users (username) VALUES (?)', (username,))
-
-#
-# with open("/Users/ospahiu/Downloads/ml-20m 2/movies.csv", 'r') as movies:
-#     count = 0
-#     next(movies)
-#     for line in movies:
-#         parsed_movie_line = line.split(',')
-#         # print(parsed_movie_line)
-#         id = parsed_movie_line[0],
-#         title = parsed_movie_line[1].strip()
-#         movie_genres = parsed_movie_line[-1].split('|')
-#         # print(parsed_movie_line)
-#         # print(movie_genres)
-#         for movie_genre in movie_genres:
-#             print(id, genres[movie_genre.strip()])
-#             # c.execute('INSERT INTO movie_genres (movieid, genreid) VALUES (?,?)', (int(id[0]), genres[movie_genre.strip()]))
-#         count += 1
-#         if count == 99:
-#             break
-
 # print("----------------Test cases ---------------")
 print("Test Case 1:", item_item_matrix[(22, 99)])
 print("Test Case 2:", item_item_matrix[(15, 87)])
@@ -176,125 +152,3 @@ print("Test Case 4:", item_item_matrix[(73, 23)])
 print("Test Case 4:", item_item_matrix[(51, 8)])
 print("Test Case 4:", item_item_matrix[(42, 79)])
 print("Test Case 4:", item_item_matrix[(10, 7)])
-
-# genres = {"Action": 1,
-#           "Adventure": 2,
-#           "Animation": 3,
-#           "Children": 4,
-#           "Comedy": 5,
-#           "Crime": 6,
-#           "Documentary": 7,
-#           "Drama": 8,
-#           "Fantasy": 9,
-#           "Film-Noir": 10,
-#           "Horror": 11,
-#           "IMAX": 12,
-#           "Musical": 13,
-#           "Mystery": 14,
-#           "Romance": 15,
-#           "Sci-Fi": 16,
-#           "Thriller": 17,
-#           "War": 18,
-#           "Western": 19}
-#
-#
-# usernames = ["AlertQuant",
-# "Annadayer",
-# "ArticlesPhat",
-# "Atmellibi",
-# "Beamburd",
-# "BeastEpicReport",
-# "Blervite",
-# "BlueGame",
-# "Bottlemed",
-# "BuddieFluent",
-# "Bufficoner",
-# "Camella",
-# "CanyonsReport",
-# "Capolassed",
-# "Carteriher",
-# "Celkage",
-# "Cleverrylh",
-# "CoverCist",
-# "Curabouc",
-# "DanceCountry",
-# "Deriells",
-# "Diagonaleu",
-# "Diumphon",
-# "Drakergile",
-# "Dramours",
-# "Draventroo",
-# "Etchicide",
-# "Faegoric",
-# "FinestFashion",
-# "Firstilli",
-# "Foprisom",
-# "Freextech",
-# "Fusional",
-# "Gameriusaro",
-# "Gausefra",
-# "GetVander",
-# "Griffonli",
-# "HaroLovely",
-# "Heidexpe",
-# "HolyCleverDailies",
-# "HomeyGrand",
-# "HumanSlim",
-# "Hydrain",
-# "InloveWil",
-# "IzPenguin",
-# "JameYounger",
-# "Keeperzesi",
-# "Kennaut",
-# "Kurocktati",
-# "Landerra",
-# "Lapilorth",
-# "Lastinghall",
-# "LatestTara",
-# "Limerivell",
-# "Matibign",
-# "MessageStronger",
-# "MonkeyAlly",
-# "MoTinnysMountain",
-# "MountainBig",
-# "MrPlace",
-# "Nanores",
-# "NearlyRunning",
-# "NephewBWith",
-# "Nepheworal",
-# "Novamrofo",
-# "PatAni",
-# "PersonDaily",
-# "Phatorksta",
-# "Phiaenette",
-# "PinCrawler",
-# "Pingotepl",
-# "ProAce",
-# "ReallyPassion",
-# "Reincock",
-# "Reporterao",
-# "RobCinco",
-# "Roltast",
-# "RomanticMessages",
-# "Saltendo",
-# "SarenPuppyNephew",
-# "Seekellaher",
-# "ShatQuoteCart",
-# "ShayFlashTeenage",
-# "Shutotrol",
-# "Singhillet",
-# "Soillpbx",
-# "Sparketpipe",
-# "Specialsie",
-# "SpecialsRocker",
-# "Starticle",
-# "Steadem",
-# "StroonsBoyUpdate",
-# "Subgenven",
-# "Synoline",
-# "Tearmation",
-# "TheborgSolomon",
-# "ThugGuy",
-# "TimesThega",
-# "Toyoneymacy",
-# "UpdateAlly"]
