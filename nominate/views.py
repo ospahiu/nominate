@@ -18,6 +18,10 @@ def index():
     return render_template('index.html', user=Movie.query.first(), movies=User.query.all() + Movie.query.all())
 
 
+@app.route("/movies")
+def movies():
+    return render_template('movies.html', movies=Movie.query.all())
+
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
