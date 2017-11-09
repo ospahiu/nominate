@@ -1,0 +1,21 @@
+{
+  "name": "nominate",
+  "description": "https://github.com/ospahiu/nominate",
+  "main": "",
+  "authors": [
+    "Olsi Spahiu <olsispahiu15@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ospahiu/nominate",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "^15.1.0",
+    "bootstrap": "^3.3.7"
+  }
+}

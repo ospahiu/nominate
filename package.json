@@ -1,0 +1,28 @@
+{
+  "name": "nominate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ospahiu/nominate.git"
+  },
+  "author": "Olsi Spahiu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ospahiu/nominate/issues"
+  },
+  "homepage": "https://github.com/ospahiu/nominate#readme",
+  "dependencies": {
+    "bower": "^1.8.2",
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-browser": "^2.1.4",
+    "gulp-size": "^2.1.0",
+    "reactify": "^1.1.1"
+  },
+  "scripts": {
+    "gulp": "gulp",
+    "minify": "gulp minify"
+  }
+}
