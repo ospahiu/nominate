@@ -15,7 +15,7 @@ def index():
     # users = get_all_users(conn)
     # all_movies = get_all_movies(conn)
 
-    return render_template('index.html', user="Movies:", movies=User.query.all() + Movie.query.all())
+    return render_template('index.html', user=Movie.query.first(), movies=User.query.all() + Movie.query.all())
 
 
 @app.teardown_appcontext

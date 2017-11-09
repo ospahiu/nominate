@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from nominate.database import Base
@@ -6,32 +6,43 @@ from nominate.database import Base
 
 class Movie(Base):
     __tablename__ = 'movies'
-    movieid = Column(Integer, primary_key=True)
+    movieid = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
     title = Column(String(), nullable=False)
     director = Column(String())
     plot = Column(String())
     year = Column(Integer)
     genres = relationship('MovieGenre', backref='movie')
     ratings = relationship('Rating', backref='movie')
-
-    # def __init__(self, id, title, director, plot, year, genres=None):
-    #     self.id = id
-    #     self.title = title
-    #     self.director = director
-    #     self.plot = plot
-    #     self.year = year
-    #     self.genres = genres
-    #     self.ratings = defaultdict(int)  # Users who rated this, and their rating.
+    similarities = relationship('Similarity', backref='movie')
 
     def __repr__(self):
-        return "<Id: {}, Title: {}, Genres {} \n{}".format(self.movieid, self.title, self.genres, self.ratings)
+        return "<Id: {}, Title: {}, Genres {}, Ratings: {}, Similariites: {}".format(self.movieid,
+                                                                                     self.title,
+                                                                                     self.genres,
+                                                                                     self.ratings,
+                                                                                     self.similarities)
+
+
+class Similarity(Base):
+    __tablename__ = 'similarities'
+    similarityid = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    movieid_i = Column(Integer, ForeignKey('movies.movieid'), nullable=False)
+    movieid_j = Column(Integer, nullable=False)
+    cosine_similarity_score = Column(Float, nullable=False)
+    __table_args__ = (UniqueConstraint('movieid_i', 'movieid_j'), UniqueConstraint('movieid_j', 'movieid_i'))
+
+    def __repr__(self):
+        return "<Id: {}, MovieId_i: {}, MovieId_j: {}, Cos score: {}>".format(self.similarityid,
+                                                                              self.movieid_i,
+                                                                              self.movieid_j,
+                                                                              self.cosine_similarity_score)
 
 
 class Rating(Base):
     __tablename__ = 'ratings'
-    ratingid = Column(Integer, primary_key=True)
-    userid = Column(Integer, ForeignKey('users.userid'))
-    movieid = Column(Integer, ForeignKey('movies.movieid'))
+    ratingid = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    userid = Column(Integer, ForeignKey('users.userid'), nullable=False)
+    movieid = Column(Integer, ForeignKey('movies.movieid'), nullable=False)
     rating = Column(Integer, nullable=False)
 
     def __repr__(self):
@@ -41,18 +52,27 @@ class Rating(Base):
                                                                       self.rating)
 
 
+class PredictiveRating(Base):
+    __tablename__ = 'predictive_ratings'
+    predictive_ratingid = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    userid = Column(Integer, ForeignKey('users.userid'), nullable=False)
+    movieid = Column(Integer, ForeignKey('movies.movieid'), nullable=False)
+    predictive_rating = Column(Float, nullable=False)
+
+    def __repr__(self):
+        return "<Id: {}, userid: {}, movieid: {}, rating: {}>".format(self.predictive_ratingid,
+                                                                      self.userid,
+                                                                      self.movieid,
+                                                                      self.predictive_rating)
+
+
 class User(Base):
     __tablename__ = 'users'
-    userid = Column(Integer, primary_key=True)
-    username = Column(String(), nullable=False)
+    userid = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    username = Column(String(), nullable=False, unique=True)
     passcode = Column(String())
     ratings = relationship('Rating', backref='user')
-
-    # def __init__(self, id, username, passcode):
-    #     self.id = id
-    #     self.username = username
-    #     self.passcode = passcode
-    #     self.ratings = defaultdict(int)  # Movies the user rated, and their rating.
+    predictive_ratings = relationship('PredictiveRating', backref='user')
 
     def __repr__(self):
         return "<Id: {}, Name: {}, Ratings: {}>".format(self.userid, self.username, self.ratings)
