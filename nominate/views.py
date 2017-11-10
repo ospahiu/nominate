@@ -1,8 +1,9 @@
+
 from flask import render_template
 
 from nominate import app
 from nominate.database import db_session
-from nominate.models import Movie, User
+from nominate.models import Movie
 
 
 @app.route("/")
@@ -14,9 +15,12 @@ def index():
     #
     # users = get_all_users(conn)
     # all_movies = get_all_movies(conn)
-
-    return render_template('index.html', user=Movie.query.first(), movies=User.query.all() + Movie.query.all())
-
+    movies = []
+    for movie in Movie.query.all():
+        movie_dict = movie.__dict__
+        movie_dict.pop('_sa_instance_state', None)
+        movies.append(movie_dict)
+    return render_template('index.html', movies=[movies[-1]])
 
 @app.route("/movies")
 def movies():

@@ -8,3 +8,7 @@ Come back soon!
 - $ pip install -r requirements.txt
 - $ npm install
 - $ bower install
+
+Running the app 
+- install, and flask run
+- yarn run gulp

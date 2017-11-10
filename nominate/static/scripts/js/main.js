@@ -39,15 +39,17 @@
 
             render: function () {
 
-                var countries = this.props.items;
+                var movies = this.props.movies;
                 var searchString = this.state.searchString.trim().toLowerCase();
 
                 // filter countries list by value from input box
                 if (searchString.length > 0) {
-                    countries = countries.filter(function (country) {
-                        return country.name.toLowerCase().match(searchString);
+                    movies = movies.filter(function (movie) {
+                        return movie.title.toLowerCase().match(searchString);
                     });
                 }
+
+                console.error(movies);
 
                 return (
                     React.createElement("div", null,
@@ -55,11 +57,11 @@
                             type: "text",
                             value: this.state.searchString,
                             onChange: this.handleChange,
-                            placeholder: "Search!"
+                            placeholder: "i.e. The God Father"
                         }),
                         React.createElement("ul", null,
-                            countries.map(function (country) {
-                                return React.createElement("li", null, country.name, " ")
+                            movies.map(function (movie) {
+                                return React.createElement("li", null, [movie.title + " " + movie.year], " ")
                             })
                         )
                     )
@@ -69,21 +71,26 @@
         });
 
 // list of countries, defined with JavaScript object literals
-        var countries = [
-            {"name": "Sweden"}, {"name": "China"}, {"name": "Peru"}, {"name": "Czech Republic"},
-            {"name": "Bolivia"}, {"name": "Latvia"}, {"name": "Samoa"}, {"name": "Armenia"},
-            {"name": "Greenland"}, {"name": "Cuba"}, {"name": "Western Sahara"}, {"name": "Ethiopia"},
-            {"name": "Malaysia"}, {"name": "Argentina"}, {"name": "Uganda"}, {"name": "Chile"},
-            {"name": "Aruba"}, {"name": "Japan"}, {"name": "Trinidad and Tobago"}, {"name": "Italy"},
-            {"name": "Cambodia"}, {"name": "Iceland"}, {"name": "Dominican Republic"}, {"name": "Turkey"},
-            {"name": "Spain"}, {"name": "Poland"}, {"name": "Haiti"}
-        ];
+// var countries = [
+//     {"name": "Sweden"}, {"name": "China"}, {"name": "Peru"}, {"name": "Czech Republic"},
+//     {"name": "Bolivia"}, {"name": "Latvia"}, {"name": "Samoa"}, {"name": "Armenia"},
+//     {"name": "Greenland"}, {"name": "Cuba"}, {"name": "Western Sahara"}, {"name": "Ethiopia"},
+//     {"name": "Malaysia"}, {"name": "Argentina"}, {"name": "Uganda"}, {"name": "Chile"},
+//     {"name": "Aruba"}, {"name": "Japan"}, {"name": "Trinidad and Tobago"}, {"name": "Italy"},
+//     {"name": "Cambodia"}, {"name": "Iceland"}, {"name": "Dominican Republic"}, {"name": "Turkey"},
+//     {"name": "Spain"}, {"name": "Poland"}, {"name": "Haiti"}
+// ];
+
+// var movies = '{{ movies }}';
+
+
+// fetch('/movies')
+//   .then((res)=>{ console.error(res)});
 
         ReactDOM.render(
-            React.createElement(DynamicSearch, {items: countries}),
+            React.createElement(DynamicSearch, {movies: JSON.parse(movies)}),
             document.getElementById('main')
         );
-        W
 
     }, {}]
 }, {}, [1]);
