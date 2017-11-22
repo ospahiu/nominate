@@ -1,58 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Nominate</title>
+    <title>Python Flask Bucket List App</title>
+
+
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     <link href="../static/css/signup.css" rel="stylesheet">
     <link href="../static/css/style.css" rel="stylesheet">
-    <link href="../static/bower_components/jquery/dist/jquery.js">
 </head>
+
 <body>
 <script type=text/javascript
         src="{{ url_for('static', filename='../static/bower_components/jquery/dist/jquery.js') }}"></script>
-<script>
-    $(function () {
-        $('#btnSignUp').click(function () {
-
-            $.ajax({
-                url: '/signUp',
-                data: $('form').serialize(),
-                type: 'POST',
-                success: function (response) {
-                    console.log(response);
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
-        });
-    });
-</script>
 
 <div class="container">
     <div class="header">
         <nav>
             <ul class="nav nav-pills pull-right">
                 <li role="presentation"><a class="more" href="/">Home</a></li>
-                <li role="presentation"><a class="more" href="/showSignIn">Sign In</a></li>
-                <li role="presentation" class="active"><a class="more" href="#">Sign Up</a></li>
+                <li role="presentation" class="active"><a class="more" href="#">Sign In</a></li>
+                <li role="presentation"><a class="more" href="/showSignUp">Sign Up</a></li>
             </ul>
         </nav>
         <h3 class="text-muted">Nominate</h3>
     </div>
 
     <div class="jumbotron" style="width: 50%;margin:auto;">
-        <h1 style="text-align: center;">Sign up for an account!</h1>
-        <form class="form-signin">
-            <label for="inputName" class="sr-only">Name</label>
-            <input type="name" name="inputName" id="inputName" class="form-control" placeholder="Username" required
-                   autofocus>
+        <h1 style="text-align: center;">Sign into your account!</h1>
+        <form class="form-signin" action="/validateLogin" method="post">
+            <label for="inputUsername" class="sr-only">Username</label>
+            <input type="username" name="inputUsername" id="inputUsername" class="form-control" placeholder="Username"
+                   required autofocus>
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password"
                    required>
 
-            <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Sign up</button>
+            <button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         </form>
     </div>
 

@@ -1,21 +1,32 @@
 /* custom styles */
 
-.container {
+/*input {*/
+/*text-align: center;*/
+/*border: 5px solid;*/
+/*padding: 13px 12px;*/
+/*font-size: 16px;*/
+/*outline: none;*/
+/*margin-bottom: 20px;*/
+/*}*/
+
+/*ul {*/
+/*margin-left: 20px;*/
+/*text-align: left;*/
+/*}*/
+
+a.more:link, a.more:visited {
+    background-color: coral;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
     text-align: center;
-    padding-top: 50px;
-    max-width: 300px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 8px;
 }
 
-input {
-    text-align: center;
-    border: 5px solid;
-    padding: 13px 12px;
-    font-size: 16px;
-    outline: none;
-    margin-bottom: 20px;
-}
-
-ul {
-    margin-left: 20px;
-    text-align: left;
+a.more:hover, a.more:active {
+    background-color: orangered;
 }

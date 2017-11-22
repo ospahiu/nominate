@@ -2,6 +2,8 @@ DEBUG = True
 HOST = '0.0.0.0'
 PORT = 5000
 DATABASE_NAME = 'nominate.db'
+SECRET_KEY = 'secret key'
+SESSION_TYPE = 'filesystem'
 
 # genres = {"Action": 1,
 #           "Adventure": 2,

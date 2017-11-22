@@ -1,3 +1,4 @@
+from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String, ForeignKey, Float, UniqueConstraint
 from sqlalchemy.orm import relationship
 
@@ -66,13 +67,17 @@ class PredictiveRating(Base):
                                                                       self.predictive_rating)
 
 
-class User(Base):
+class User(UserMixin, Base):
     __tablename__ = 'users'
     userid = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
     username = Column(String(), nullable=False, unique=True)
     passcode = Column(String())
     ratings = relationship('Rating', backref='user')
     predictive_ratings = relationship('PredictiveRating', backref='user')
+
+    def get_id(self):
+        return self.userid
+
 
     def __repr__(self):
         return "<Id: {}, Name: {}, Ratings: {}>".format(self.userid, self.username, self.ratings)

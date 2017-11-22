@@ -1,7 +1,9 @@
-from flask import render_template, json, request
+from flask import render_template, json, request, redirect
+from flask_login import login_required, login_user, logout_user
 from werkzeug import security
+from werkzeug.security import check_password_hash
 
-from nominate import app
+from nominate import app, login_manager
 from nominate.database import db_session
 from nominate.models import Movie, User
 
@@ -45,13 +47,53 @@ def signUp():
         user = User(username=_name, passcode=_hashed_password)
         db_session.add(user)
         db_session.commit()
-        return json.dumps({'html': '<span>All fields good !!</span>'})
+        return json.dumps({'message': 'User created successfully !'})
     else:
         return json.dumps({'html': '<span>Enter the required fields</span>'})
+
+
+@app.route('/validateLogin', methods=['POST'])
+def validateLogin():
+    # try:
+    _username = request.form['inputUsername']
+    _password = request.form['inputPassword']
+    user = User.query.filter(User.username == _username).first()
+
+    if user and check_password_hash(user.passcode, _password):
+        print(user)
+        login_user(user)
+        return redirect("/dashboard")
+    else:
+        return render_template('error.html', error='Wrong Email address or Password.')
+
+
+@app.route('/dashboard')
+@login_required
+def userHome():
+    print(login_required)
+    return render_template('dashboard.html')
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect('/')
+
+
+@app.route('/showSignIn')
+def showSignin():
+    return render_template('signin.html')
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
 
 # def get_all_movies(connection):
 #     movies = {}
