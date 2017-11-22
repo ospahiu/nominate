@@ -1,9 +1,9 @@
-
-from flask import render_template
+from flask import render_template, json, request
+from werkzeug import security
 
 from nominate import app
 from nominate.database import db_session
-from nominate.models import Movie
+from nominate.models import Movie, User
 
 
 @app.route("/")
@@ -25,6 +25,29 @@ def index():
 @app.route("/movies")
 def movies():
     return render_template('movies.html', movies=Movie.query.all())
+
+
+@app.route('/showSignUp')
+def showSignUp():
+    return render_template('signup.html')
+
+
+@app.route('/signUp', methods=['POST'])
+def signUp():
+    # read the posted values from the UI
+    _name = request.form['inputName']
+    # _email = request.form['inputEmail']
+    _password = request.form['inputPassword']
+    # validate the received values
+    if _name and _password:
+        _hashed_password = security.generate_password_hash(_password)
+        print(_name, _hashed_password)
+        user = User(username=_name, passcode=_hashed_password)
+        db_session.add(user)
+        db_session.commit()
+        return json.dumps({'html': '<span>All fields good !!</span>'})
+    else:
+        return json.dumps({'html': '<span>Enter the required fields</span>'})
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

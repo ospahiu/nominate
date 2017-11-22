@@ -13,33 +13,87 @@
 {#</html>#}
 
 
+{#<!DOCTYPE html>#}
+{#<html>#}
+{#<head lang="en">#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Flask React</title>#}
+{#    <meta name="viewport" content="width=device-width, initial-scale=1.0">#}
+{#    <!-- styles -->#}
+{#    <link rel="stylesheet" type="text/css"#}
+{#          href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">#}
+{#    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">#}
+{#</head>#}
+{#<body>#}
+{#<div class="container">#}
+{#    <h1>Nominate.com</h1>#}
+{#    <br>#}
+{#    <div id="main"></div>#}
+{#</div>#}
+{#<!-- scripts -->#}
+{##}
+{##}
+{#<script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>#}
+{#<script src="{{ url_for('static', filename='bower_components/react/react-dom.min.js') }}"></script>#}
+{##}
+{##}
+{#<script>var movies = '{{ movies|tojson }}';#}
+{#console.log("Movies list", JSON.parse(movies))#}
+{#</script>#}
+{#<script src="{{ url_for('static', filename='scripts/js/main.js') }}"></script>#}
+{#</body>#}
+{#</html>#}
+
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Flask React</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- styles -->
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+<html lang="en">
+
+<head>
+    <title>Nominate.com</title>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+
+
 </head>
 <body>
 <div class="container">
-    <h1>Nominate.com</h1>
-    <br>
-    <div id="main"></div>
+    <div class="header">
+        <nav>
+            <ul class="nav nav-pills pull-right">
+                <li role="presentation" class="active"><a href="#">Home</a>
+                </li>
+                <li role="presentation"><a href="#">Sign In</a>
+                </li>
+                <li role="presentation"><a href="showSignUp">Sign Up</a>
+                </li>
+            </ul>
+        </nav>
+        <h3 class="text-muted">Nominate</h3>
+    </div>
+
+    <div class="jumbotron">
+        <h1>Get Movie Recommendations</h1>
+        <p class="lead"></p>
+        <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Sign up today</a>
+        </p>
+    </div>
+
+    <div class="row marketing">
+        <div class="col-lg-6">
+            <h4>Rate Movies</h4>
+            <p>Look through our catalogue of movies, and rate them!</p>
+
+            <h4>Get Recommendations</h4>
+            <p>See what other movies you might like, based on personalized recommendations.</p>
+
+            <h4>User reviews</h4>
+            <p>See what other users have to say about the movies.</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; Olsi Spahiu, 2017</p>
+    </footer>
 </div>
-<!-- scripts -->
-
-
-<script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
-<script src="{{ url_for('static', filename='bower_components/react/react-dom.min.js') }}"></script>
-
-
-<script>var movies = '{{ movies|tojson }}';
-console.log("Movies list", JSON.parse(movies))
-</script>
-<script src="{{ url_for('static', filename='scripts/js/main.js') }}"></script>
 </body>
+
 </html>

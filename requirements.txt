@@ -4,7 +4,7 @@ Flask-SQLAlchemy==2.3.2
 itsdangerous==0.24
 Jinja2==2.9.6
 MarkupSafe==1.0
--e git+https://github.com/ospahiu/nominate.git@51c8e217593cf6ef1441b2479f307f4ed7e790a6#egg=nominate
+-e git+https://github.com/ospahiu/nominate.git@6bee2ad7d7db1b1ba90af7487d6e839338cac761#egg=nominate
 nose==1.3.7
 numpy==1.13.3
 pbr==3.1.1
