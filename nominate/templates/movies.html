@@ -7,9 +7,9 @@
 <body>
 
 <h1>Movies:</h1>
-
-<p>{{ movie.title }} </p>
-
+{% for movie in movies %}
+    <p>{{ movie.title }} </p>
+{% endfor %}
 </body>
 </html>
 

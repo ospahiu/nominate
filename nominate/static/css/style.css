@@ -30,3 +30,20 @@ a.more:link, a.more:visited {
 a.more:hover, a.more:active {
     background-color: orangered;
 }
+
+a.movielistitem:link, a.movielistitem:visited {
+    border-radius: 5px;
+    background-color: white;
+    color: #0a6ebd;
+    padding: 10px;
+    padding-left: 15px;
+    border-color: grey;
+    border: medium;
+}
+
+a.movielistitem:hover {
+    background-color: #0a6ebd;
+    color: white;
+    border-color: #0a6ebd;
+    border: solid;
+}

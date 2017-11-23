@@ -37,8 +37,11 @@
             <div class="list-group">
                 {% for rating in current_user.ratings %}
                     <a href="#" class="list-group-item">
-                        <h4 class="list-group-item-heading">{{ rating.movieid }}</h4>
-                        <p class="list-group-item-text">{{ rating.rating }}</p>
+                        <h4 class="list-group-item-heading">{{ movies[loop.index0].title }}
+                            <span>({{ movies[loop.index0].year }})</span>
+                            <span class="badge badge-pill badge-warning">{{ movies[loop.index0].average_rating }}</span>
+                        </h4>
+                        <p class="list-group-item-text">Your Rating: {{ rating.rating }}/5</p>
                     </a>
                 {% endfor %}
             </div>

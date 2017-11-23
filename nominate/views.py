@@ -1,5 +1,5 @@
 from flask import render_template, json, request, redirect
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug import security
 from werkzeug.security import check_password_hash
 
@@ -58,20 +58,20 @@ def validateLogin():
     _username = request.form['inputUsername']
     _password = request.form['inputPassword']
     user = User.query.filter(User.username == _username).first()
-
-    if user and check_password_hash(user.passcode, _password):
-        print(user)
-        login_user(user)
-        return redirect("/dashboard")
-    else:
-        return render_template('error.html', error='Wrong Email address or Password.')
+    if user:
+        if not user.passcode or check_password_hash(user.passcode, _password):
+            print(user)
+            login_user(user)
+            return redirect("/dashboard")
+    return render_template('error.html', error='Wrong Email address or Password.')
 
 
 @app.route('/dashboard')
 @login_required
 def userHome():
-    print(login_required)
-    return render_template('dashboard.html')
+    movies = [Movie.query.get(rating.movieid) for rating in current_user.ratings]
+    print(len(movies))
+    return render_template('dashboard.html', movies=movies)
 
 
 @app.route("/logout")

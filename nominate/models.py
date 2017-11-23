@@ -13,6 +13,11 @@ class Movie(Base):
     plot = Column(String())
     year = Column(Integer)
     genres = relationship('MovieGenre', backref='movie')
+
+    # @aggregated('ratings', Column(Float))
+    # def average_rating(self):
+    #     return func.avg(Rating.rating)
+
     ratings = relationship('Rating', backref='movie')
     similarities = relationship('Similarity', backref='movie')
 
