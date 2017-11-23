@@ -70,7 +70,7 @@ def validateLogin():
 @login_required
 def userHome():
     movies = [Movie.query.get(rating.movieid) for rating in current_user.ratings]
-    print(len(movies))
+    # print(movies[0].average_rating)
     return render_template('dashboard.html', movies=movies)
 
 

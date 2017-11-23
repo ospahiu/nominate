@@ -1,5 +1,8 @@
+import statistics
+
 from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String, ForeignKey, Float, UniqueConstraint
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 
 from nominate.database import Base
@@ -13,13 +16,15 @@ class Movie(Base):
     plot = Column(String())
     year = Column(Integer)
     genres = relationship('MovieGenre', backref='movie')
-
-    # @aggregated('ratings', Column(Float))
-    # def average_rating(self):
-    #     return func.avg(Rating.rating)
-
     ratings = relationship('Rating', backref='movie')
     similarities = relationship('Similarity', backref='movie')
+
+    @hybrid_property
+    def average_rating(self):
+        if len(self.ratings):
+            return round(statistics.mean(rating.rating for rating in self.ratings), 1)
+        return None
+
 
     def __repr__(self):
         return "<Id: {}, Title: {}, Genres {}, Ratings: {}, Similariites: {}".format(self.movieid,

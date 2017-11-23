@@ -47,3 +47,36 @@ a.movielistitem:hover {
     border-color: #0a6ebd;
     border: solid;
 }
+
+div.userbanner {
+    padding: 15px;
+    height: 200px;
+    vertical-align: middle;
+    align-items: flex-start;
+    border-radius: 5px;
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: linear-gradient(45deg, lightseagreen, powderblue);
+}
+
+div.homebanner {
+    padding: 15px;
+    padding-left: 30px;
+    height: 200px;
+    vertical-align: middle;
+    align-items: flex-start;
+    border-radius: 5px;
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: linear-gradient(-45deg, yellow, orangered);
+}
+
+img.logo {
+    height: auto;
+    width: auto;
+    max-width: 250px;
+    display: block;
+    margin: 0 auto;
+}

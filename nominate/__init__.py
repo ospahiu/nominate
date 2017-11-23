@@ -10,7 +10,7 @@ app.config.update(dict(
     DATABASE=os.path.join(app.root_path, app.config["DATABASE_NAME"]),
 ))
 app.config.from_envvar('NOMINATE_SETTINGS', silent=True)
-
+app.jinja_env.globals.update(len=len)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
