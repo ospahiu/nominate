@@ -73,10 +73,40 @@ div.homebanner {
     background: linear-gradient(-45deg, yellow, orangered);
 }
 
+div.moviebanner {
+    padding: 15px;
+    padding-left: 30px;
+    height: 200px;
+    vertical-align: middle;
+    align-items: flex-start;
+    border-radius: 5px;
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background: linear-gradient(-45deg, darkslategrey, lightseagreen);
+}
+
 img.logo {
     height: auto;
     width: auto;
     max-width: 250px;
     display: block;
     margin: 0 auto;
+}
+
+img.thumbnail {
+    height: auto;
+    width: auto;
+    max-height: 150px;
+    display: block;
+    margin: 0 auto;
+}
+
+div.plot {
+    color: black;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    background-color: #f7f7f7;
+    padding: 10px;
+    border-radius: 5px;
 }

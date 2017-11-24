@@ -11,6 +11,8 @@ app.config.update(dict(
 ))
 app.config.from_envvar('NOMINATE_SETTINGS', silent=True)
 app.jinja_env.globals.update(len=len)
+app.jinja_env.globals.update(range=range)
+app.jinja_env.globals.update(int=int)
 login_manager = LoginManager()
 login_manager.init_app(app)
 

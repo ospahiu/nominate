@@ -1,34 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Nominate.com</title>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="../static/css/style.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../static/images/favicon.ico">
 </head>
 <body>
+<div class="container" style="margin-top: 40px">
+    <img src="../static/images/logo.png" class="logo"/>
+    <div class="header">
+        <nav>
+            <ul class="nav nav-pills" role="tablist">
+                <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a>
+                    {#                <button href="/" type="button" class="btn btn-primary">Home</button></li>#}
+                <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
+                <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
-<h1>Movies:</h1>
-{% for movie in movies %}
-    <p>{{ movie.title }} </p>
-{% endfor %}
+    <div class="moviebanner">
+        <h1>Movies</h1>
+    </div>
+
+
+    <div class="row">
+        {% for movie in movies %}
+            <div style="padding-bottom: 20px;" class="col">
+                <a style="flex-grow: 1;" href="/" class="list-group-item">
+
+                    <div style="display: flex; margin-top: 5px; margin-bottom: 10px">
+                        <div>
+                            <img src="{{ "../static/images/movies/%d.jpg" % movie.movieid }}" class="thumbnail"/>
+                        </div>
+                        <div style="margin-left: 10px; flex-grow: 1;">
+                            <h6>{{ movie.title }} ({{ movie.year }})</h6>
+                            <div>Score:
+                                {% if not movie.average_rating %}
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                {% elif movie.average_rating < 3.0 %}
+                                    <span class="badge badge-pill badge-warning">
+                                      {{ movie.average_rating }}
+                                  </span>
+                                {% else %}
+                                    <span class="badge badge-pill badge-success">
+                                      {{ movie.average_rating }}
+                                  </span>
+                                {% endif %}
+                            </div>
+                            <div>Director: {{ movie.director }}</div>
+                        </div>
+                    </div>
+
+
+                    <div class="plot">
+                        {{ movie.plot }}
+                    </div>
+                </a>
+            </div>
+            {% if loop.index % 3 == 0 %}
+                <div class="w-100"></div>
+            {% endif %}
+        {% endfor %}
+        {% for _ in range((len(movies) % 3) + 1) %}
+            <div style="padding-bottom: 20px;" class="col"></div>
+        {% endfor %}
+    </div>
+    <footer style="margin: auto;text-align: center; padding: 20px;" class="footer">
+        <p>&copy; Olsi Spahiu, 2017</p>
+    </footer>
+</div>
 </body>
-</html>
 
-{##}
-{#<!DOCTYPE html>#}
-{#<html>#}
-{#  <head lang="en">#}
-{#    <meta charset="UTF-8">#}
-{#    <title>Movies</title>#}
-{#    <meta name="viewport" content="width=device-width, initial-scale=1.0">#}
-{#    <!-- styles -->#}
-{#    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">#}
-{#    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">#}
-{#  </head>#}
-{#  <body>#}
-{#    <div class="container">#}
-{#      <h1>Nominate.com</h1>#}
-{#      <br>#}
-{#      <div id="main"></div>#}
-{#    </div>#}
-{#  </body>#}
-{#</html>#}
+</html>

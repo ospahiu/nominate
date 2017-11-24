@@ -26,7 +26,12 @@ def index():
 
 @app.route("/movies")
 def movies():
-    return render_template('movies.html', movies=Movie.query.all())
+    return render_template('movies.html', movies=sorted(Movie.query.all(), key=lambda movie: movie.title))
+
+
+@app.route("/movie/<int:movie_id>")
+def movie(movie_id):
+    return render_template('movie.html', movie=Movie.query.get(movie_id))
 
 
 @app.route('/showSignUp')
