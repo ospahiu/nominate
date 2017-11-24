@@ -42,7 +42,7 @@
 
             <div class="list-group">
                 {% for rating in current_user.ratings %}
-                    <a href="#" class="list-group-item">
+                    <a href="{{ "/movie/%d" % movies[loop.index0].movieid }}" class="list-group-item">
                         <h4 class="list-group-item-heading">{{ movies[loop.index0].title }}
                             <span>({{ movies[loop.index0].year }})</span>
                             {% if not movies[loop.index0].average_rating %}

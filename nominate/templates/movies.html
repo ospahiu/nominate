@@ -31,7 +31,7 @@
     <div class="row">
         {% for movie in movies %}
             <div style="padding-bottom: 20px;" class="col">
-                <a style="flex-grow: 1;" href="/" class="list-group-item">
+                <a style="flex-grow: 1;" href="{{ "/movie/%d" % movie.movieid }}" class="list-group-item">
 
                     <div style="display: flex; margin-top: 5px; margin-bottom: 10px">
                         <div>
@@ -54,11 +54,6 @@
                             </div>
                             <div>Director: {{ movie.director }}</div>
                         </div>
-                    </div>
-
-
-                    <div class="plot">
-                        {{ movie.plot }}
                     </div>
                 </a>
             </div>
