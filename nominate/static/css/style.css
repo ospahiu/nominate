@@ -102,6 +102,14 @@ img.thumbnail {
     margin: 0 auto;
 }
 
+img.smallThumbnail {
+    height: auto;
+    width: auto;
+    max-height: 80px;
+    display: block;
+    margin: 0 auto;
+}
+
 img.full {
     height: auto;
     width: auto;
@@ -111,7 +119,7 @@ img.full {
 }
 
 div.plot {
-    flex-flow: 1;
+    flex-grow: 1;
     color: black;
     margin-top: 10px;
     margin-bottom: 5px;
@@ -119,3 +127,58 @@ div.plot {
     padding: 10px;
     border-radius: 5px;
 }
+
+/* The heart of the matter */
+.testimonial-group > .row {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.testimonial-group > .row > .col-xs-4 {
+    display: inline-block;
+    float: none;
+}
+
+/* Decorations */
+.col-xs-4 {
+    width: 300px;
+    color: #fff;
+    font-size: 48px;
+    padding-bottom: 20px;
+    padding-top: 18px;
+}
+
+.col-xs-4:nth-child(3n+1) {
+    background: #c69;
+}
+
+.col-xs-4:nth-child(3n+2) {
+    background: #9c6;
+}
+
+.col-xs-4:nth-child(3n+3) {
+    background: #69c;
+}
+
+div.scrollmenu {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+div.scrollmenu a {
+    display: inline-block;
+    /*color: white;*/
+    text-align: left;
+    padding: 14px;
+    text-decoration: none;
+}
+
+footer.website {
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+}
+
+/*div.scrollmenu a:hover {*/
+/*background-color: #777;*/
+/*}*/

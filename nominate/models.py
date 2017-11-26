@@ -20,6 +20,13 @@ class Movie(Base):
     similarities = relationship('Similarity', backref='movie')
 
     @hybrid_property
+    def similar_movies(self):
+        return [Movie.query.get(similarity.movieid_j)
+                for similarity in
+                sorted(self.similarities, key=lambda similarity: similarity.cosine_similarity_score)
+                if similarity.movieid_j != self.movieid]
+
+    @hybrid_property
     def average_rating(self):
         if len(self.ratings):
             return round(statistics.mean(rating.rating for rating in self.ratings), 1)

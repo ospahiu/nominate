@@ -10,19 +10,7 @@ from nominate.models import Movie, User
 
 @app.route("/")
 def index():
-    # conn = connect(app.config['DATABASE'])
-    #
-    # cursor = conn.cursor()
-    # cursor.execute("SELECT * FROM movies")
-    #
-    # users = get_all_users(conn)
-    # all_movies = get_all_movies(conn)
-    movies = []
-    for movie in Movie.query.all():
-        movie_dict = movie.__dict__
-        movie_dict.pop('_sa_instance_state', None)
-        movies.append(movie_dict)
-    return render_template('index.html', movies=[movies[-1]])
+    return render_template('index.html')
 
 @app.route("/movies")
 def movies():
@@ -83,7 +71,7 @@ def userHome():
 @login_required
 def logout():
     logout_user()
-    return redirect('/')
+    return render_template('error.html', error="You've logged out successfully.")
 
 
 @app.route('/showSignIn')

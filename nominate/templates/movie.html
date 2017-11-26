@@ -15,9 +15,14 @@
         <nav>
             <ul class="nav nav-pills" role="tablist">
                 <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a>
-                    {#                <button href="/" type="button" class="btn btn-primary">Home</button></li>#}
-                <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
-                <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a>
+                <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a>
+                    {% if current_user.is_authenticated %}
+                        <li role="presentation"><a class="more" role="tab" href="/dashboard">Dashboard</a>
+                        <li role="presentation" class="active"><a class="more" href="/logout">Logout</a>
+                            {% else %}
+                        <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
+                        <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a>
+                    {% endif %}
                 </li>
             </ul>
         </nav>
@@ -45,18 +50,57 @@
                       {{ movie.average_rating }}
                   </span>
                 {% endif %}
+
+
             </h4>
             </div>
             <div><h4>Director: {{ movie.director }}</h4></div>
+            {% if current_user.is_authenticated %}
+                <p class="list-group-item-text">Your Rating: {{ "N/A" }}</p>
+            {% endif %}
             <div class="plot">
                 {{ movie.plot }}
             </div>
         </div>
+    </div>
 
+    <div class="page-header">
+        <h2>Similar Movies</h2>
+        <hr/>
+        <div class="scrollmenu">
+
+            {% for similar_movie in movie.similar_movies[:10] %}
+                <a style="flex-grow: 1;" href="{{ "/movie/%d" % similar_movie.movieid }}" class="list-group-item">
+                    <div style="display: flex;  width: 50%; margin-top: 5px; margin-bottom: 10px">
+                        <div>
+                            <img src="{{ "../static/images/movies/%d.jpg" % similar_movie.movieid }}"
+                                 class="thumbnail"/>
+                        </div>
+                        <div style="margin-left: 10px; flex-grow: 1;">
+                            <h6>{{ similar_movie.title }} ({{ similar_movie.year }})</h6>
+                            <div>Score:
+                                {% if not similar_movie.average_rating %}
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                {% elif similar_movie.average_rating < 3.0 %}
+                                    <span class="badge badge-pill badge-warning">
+                                      {{ similar_movie.average_rating }}
+                                  </span>
+                                {% else %}
+                                    <span class="badge badge-pill badge-success">
+                                      {{ similar_movie.average_rating }}
+                                  </span>
+                                {% endif %}
+                            </div>
+                            <div>Director: {{ similar_movie.director }}</div>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
 
     </div>
 
-    <footer style="margin: auto;text-align: center; padding: 20px;" class="footer">
+    <footer class="website">
         <p>&copy; Olsi Spahiu, 2017</p>
     </footer>
 </div>

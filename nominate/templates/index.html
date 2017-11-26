@@ -1,49 +1,3 @@
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>Title</title>#}
-{#</head>#}
-{#<body>#}
-{#<h1>User {{ user }} has rated the following movies:</h1>#}
-{#{% for movie in movies %}#}
-{#    <p>{{ movie }} </p>#}
-{#{% endfor %}#}
-{#</body>#}
-{#</html>#}
-
-
-{#<!DOCTYPE html>#}
-{#<html>#}
-{#<head lang="en">#}
-{#    <meta charset="UTF-8">#}
-{#    <title>Flask React</title>#}
-{#    <meta name="viewport" content="width=device-width, initial-scale=1.0">#}
-{#    <!-- styles -->#}
-{#    <link rel="stylesheet" type="text/css"#}
-{#          href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">#}
-{#    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">#}
-{#</head>#}
-{#<body>#}
-{#<div class="container">#}
-{#    <h1>Nominate.com</h1>#}
-{#    <br>#}
-{#    <div id="main"></div>#}
-{#</div>#}
-{#<!-- scripts -->#}
-{##}
-{##}
-{#<script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>#}
-{#<script src="{{ url_for('static', filename='bower_components/react/react-dom.min.js') }}"></script>#}
-{##}
-{##}
-{#<script>var movies = '{{ movies|tojson }}';#}
-{#console.log("Movies list", JSON.parse(movies))#}
-{#</script>#}
-{#<script src="{{ url_for('static', filename='scripts/js/main.js') }}"></script>#}
-{#</body>#}
-{#</html>#}
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,8 +17,13 @@
                 <li role="presentation" class="active"><a class="more" role="tab" href="#">Home</a>
                 <li role="presentation"><a class="more" role="tab" href="/movies">Movies</a>
                     {#                <button href="/" type="button" class="btn btn-primary">Home</button></li>#}
-                <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
-                <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a>
+                    {% if current_user.is_authenticated %}
+                        <li role="presentation"><a class="more" role="tab" href="/dashboard">Dashboard</a>
+                        <li role="presentation" class="active"><a class="more" href="/logout">Logout</a>
+                            {% else %}
+                        <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
+                        <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a>
+                    {% endif %}
                 </li>
             </ul>
         </nav>
