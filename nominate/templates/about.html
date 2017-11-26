@@ -10,10 +10,11 @@
 </head>
 <body>
 <div class="container" style="margin-top: 40px">
+    <img src="../static/images/logo.png" class="logo"/>
     <div class="header">
         <nav>
             <ul class="nav nav-pills" role="tablist">
-                <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
+                <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
                 <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
                 {% if current_user.is_authenticated %}
                     <li role="presentation"><a class="more" role="tab" href="/dashboard">Dashboard</a></li>
@@ -26,25 +27,26 @@
         </nav>
     </div>
 
-    <div style="margin-bottom: 20%; margin-top: 20%;">
-        <img src="../static/images/logo.png" class="frontPageLogo"/>
-        <div class="row" style="justify-content: center; margin-top: 20px">
-            <div class="col-md-6">
-                <div id="custom-search-input">
-                    <div class="input-group col-md-12">
-                        <input type="text" class="form-control input-lg" placeholder="Search for movies"/>
-                        <span class="input-group-btn">
-                            <button class="btn btn-info btn-lg" type="button"
-                                    style="padding:0px 30px 5px 30px; background-color: lightgrey; border-color: darkgray">
-                                <img style="height: auto; width: 20px;" src="../static/images/search-icon.png"/>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="homebanner">
+        <h1>Get Movie Recommendations</h1>
+        <p class="lead"></p>
+        <p><a class="btn btn-lg btn-primary" href="showSignUp" role="button">Sign up today</a>
+        </p>
     </div>
 
+
+    <div class="row marketing">
+        <div class="col-lg-6">
+            <h4>Rate Movies</h4>
+            <p>Look through our catalogue of movies, and rate them!</p>
+
+            <h4>Get Recommendations</h4>
+            <p>See what other movies you might like, based on personalized recommendations.</p>
+
+            <h4>User Reviews</h4>
+            <p>See what other users have to say about the movies.</p>
+        </div>
+    </div>
 
     <footer class="website">
         <p>&copy; Olsi Spahiu, 2017</p>

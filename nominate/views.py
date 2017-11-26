@@ -12,6 +12,11 @@ from nominate.models import Movie, User
 def index():
     return render_template('index.html')
 
+
+@app.route("/about")
+def about():
+    return render_template('about.html')
+
 @app.route("/movies")
 def movies():
     return render_template('movies.html', movies=sorted(Movie.query.all(), key=lambda movie: movie.title))
