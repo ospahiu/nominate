@@ -34,7 +34,7 @@
         </nav>
     </div>
 
-    <div class="moviebanner">
+    <div class="movieitembanner">
         <h1>{{ movie.title }}</h1>
     </div>
 
@@ -61,24 +61,35 @@
             </h4>
             </div>
             <div><h4>Director: {{ movie.director }}</h4></div>
-            {% if current_user.is_authenticated %}
-                <p class="list-group-item-text">
-                    Your Rating:
-                    {% if user_rating %}
-                        {% if user_rating.rating  < 3.0 %}
-                            <span class="badge badge-pill badge-warning">
-                              {{ user_rating.rating }}/5
-                            </span>
-                        {% else %}
-                            <span class="badge badge-pill badge-success">
-                              {{ user_rating.rating }}/5
-                            </span>
-                        {% endif %}
-                    {% else %}
-                        <span class="badge badge-pill badge-info">N/A</span>
+            <div style="display: inline">
+                <h4 style="display: inline"><span>Genre(s):</span></h4>
+                {% for movie_genre in movie.genres %}
+                    <span>{{ movie_genre.genre.genre }}</span>
+                    {% if len(movie.genres) > 0 and loop.index0 < len(movie.genres) - 1 %}
+                        <span>,</span>
                     {% endif %}
-                </p>
-            {% endif %}
+                {% endfor %}
+            </div>
+            <div style="margin-top: 15px">
+                {% if current_user.is_authenticated %}
+                    <p class="list-group-item-text">
+                        Your Rating:
+                        {% if user_rating %}
+                            {% if user_rating.rating  < 3.0 %}
+                                <span class="badge badge-pill badge-warning">
+                                  {{ user_rating.rating }}/5
+                                </span>
+                            {% else %}
+                                <span class="badge badge-pill badge-success">
+                                  {{ user_rating.rating }}/5
+                                </span>
+                            {% endif %}
+                        {% else %}
+                            <span class="badge badge-pill badge-info">N/A</span>
+                        {% endif %}
+                    </p>
+                {% endif %}
+            </div>
             <div class="plot">
                 {{ movie.plot }}
             </div>
