@@ -124,7 +124,13 @@ img.frontPageLogo {
     margin: auto;
 }
 
-
+img.usericon {
+    height: auto;
+    width: auto;
+    max-width: 20px;
+    display: block;
+    margin: auto;
+}
 
 img.thumbnail {
     height: auto;

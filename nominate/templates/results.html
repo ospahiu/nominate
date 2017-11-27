@@ -19,21 +19,29 @@
     <img src="../static/images/logo.png" class="logo"/>
     <div class="header">
         <nav>
-            <ul class="nav nav-pills pull-right">
+            <ul style="position:relative;" class="nav nav-pills pull-right">
                 <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
-                <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
-                <li role="presentation"><a class="more" role="tab" href="/movies">Movies</a>
-                <li role="presentation" class="active"><a class="more" href="/logout">Logout</a>
-                </li>
+                <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
+                {% if current_user.is_authenticated %}
+                    <li role="presentation"><a class="more" role="tab" href="/dashboard">Dashboard</a></li>
+                    <li role="presentation" class="active"><a class="more" href="/logout">Logout</a></li>
+                    <li style="position:absolute;right: 0;" role="presentation">
+                        <div style="margin-top: 12px; float: right;">
+                            <img style="display: inline-block;" src="../static/images/user-icon.png" class="usericon"/>
+                            <span style="margin-left: 10px; margin-top: 2px; float: right;">{{ current_user.username }}</span>
+                        </div>
+                    </li>
+                {% else %}
+                    <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
+                    <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a></li>
+                {% endif %}
             </ul>
         </nav>
-
-        {#        <h3 class="text-muted">Nominate</h3>#}
     </div>
 
     <div class="page-header">
-            <h1>Results ({{ len(movies) }})</h1>
-        </div>
+        <h1>Results ({{ len(movies) }})</h1>
+    </div>
 
 
     <div class="container">
