@@ -50,6 +50,21 @@ def signUp():
         return json.dumps({'html': '<span>Enter the required fields</span>'})
 
 
+@app.route('/search')
+def search():
+    # read the posted values from the UI
+    _query = request.args.get('query')
+    print(_query)
+    print("hit")
+    # validate the received values
+    if _query:
+        return render_template('results.html', movies=Movie.query.filter(Movie.title.ilike(_query)).all())
+        # json.dumps({'message': '{}'.format(_query)})
+    else:
+        return render_template('error.html', error='No search text provided.')
+
+
+
 @app.route('/validateLogin', methods=['POST'])
 def validateLogin():
     # try:

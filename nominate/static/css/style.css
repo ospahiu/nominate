@@ -14,6 +14,28 @@
 /*text-align: left;*/
 /*}*/
 
+input.search[type=text] {
+    vertical-align: middle;
+    width: 100px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+    /*background-image: url('../images/search-icon.png');*/
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    margin-top: 9px;
+    padding: 5px 10px 5px 20px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+input.search[type=text]:focus {
+    width: 200%;
+}
+
+
 a.more:link, a.more:visited {
     background-color: coral;
     color: white;

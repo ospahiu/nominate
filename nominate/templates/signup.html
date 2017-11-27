@@ -10,6 +10,7 @@
     <link rel="shortcut icon" href="../static/images/favicon.ico">
 </head>
 <body>
+
 <script type=text/javascript
         src="{{ url_for('static', filename='../static/bower_components/jquery/dist/jquery.js') }}"></script>
 <script>
@@ -38,13 +39,14 @@
             <ul class="nav nav-pills pull-right">
                 <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
                 <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
+                <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
                 <li role="presentation"><a class="more" href="/showSignIn">Sign In</a></li>
                 <li role="presentation" class="active"><a class="more" href="#">Sign Up</a></li>
             </ul>
         </nav>
     </div>
 
-    <div class="jumbotron" style="width: 50%;margin:auto;">
+    <div class="jumbotron" style="width: 50%;margin:auto; margin-top: 15px;">
         <h1 style="text-align: center;">Sign up for an account!</h1>
         <form class="form-signin">
             <label for="inputName" class="sr-only">Name</label>

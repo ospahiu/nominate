@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Nominate</title>
+
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="../static/css/signup.css" rel="stylesheet">
+    <link href="../static/css/style.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../static/images/favicon.ico">
+
+</head>
+
+<body>
+
+
+<div class="container">
+    <img src="../static/images/logo.png" class="logo"/>
+    <div class="header">
+        <nav>
+            <ul class="nav nav-pills pull-right">
+                <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
+                <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
+                <li role="presentation"><a class="more" role="tab" href="/movies">Movies</a>
+                <li role="presentation" class="active"><a class="more" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </nav>
+
+        {#        <h3 class="text-muted">Nominate</h3>#}
+    </div>
+
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Results ({{ len(movies) }})</h1>
+        </div>
+
+        <div class="list-group">
+            {% for movie in movies %}
+                <a href="{{ "/movie/%d" % movie.movieid }}" class="list-group-item">
+                    <div style="margin: auto; ">
+                        <div style="float: left;">
+                            <img src="{{ "../static/images/movies/%d.jpg" % movie.movieid }}"
+                                 class="smallThumbnail"/>
+                        </div>
+                        <div style="margin-left: 7%;">
+                            <h4 class="list-group-item-heading">{{ movie.title }}
+                                <span>({{ movie.year }})</span>
+                                {% if not movie.average_rating %}
+                                    <span class="badge badge-pill badge-info">
+                                        N/A
+                                    </span>
+
+                                {% elif movie.average_rating < 3.0 %}
+                                    <span class="badge badge-pill badge-warning">
+                                        {{ movie.average_rating }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge badge-pill badge-success">
+                                        {{ movie.average_rating }}
+                                    </span>
+                                {% endif %}
+                            </h4>
+                        </div>
+
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="website">
+        <p>&copy; Olsi Spahiu, 2017</p>
+    </footer>
+
+</div>
+</body>
+
+</html>

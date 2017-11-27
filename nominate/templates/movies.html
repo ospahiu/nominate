@@ -16,19 +16,18 @@
             <ul class="nav nav-pills" role="tablist">
                 <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
                 <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
-                    {#                <button href="/" type="button" class="btn btn-primary">Home</button></li>#}
+                {% if current_user.is_authenticated %}
+                    <li role="presentation"><a class="more" role="tab" href="/dashboard">Dashboard</a></li>
+                    <li role="presentation" class="active"><a class="more" href="/logout">Logout</a></li>
+                {% else %}
+                    <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
+                    <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a></li>
+                {% endif %}
 
-                    {% if current_user.is_authenticated %}
-                        <li role="presentation"><a class="more" role="tab" href="/dashboard">Dashboard</a>
-                        <li role="presentation" class="active"><a class="more" href="/logout">Logout</a>
-                            {% else %}
-                <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
-                <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a>
-                    {% endif %}
-
-
-
-
+                <li role="presentation">
+                    <form action="{{ url_for('search') }}" method="get">
+                        <input type="text" name="query" placeholder="Search.." class="search">
+                    </form>
                 </li>
             </ul>
         </nav>
