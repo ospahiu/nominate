@@ -62,13 +62,29 @@
             </div>
             <div><h4>Director: {{ movie.director }}</h4></div>
             {% if current_user.is_authenticated %}
-                <p class="list-group-item-text">Your Rating: {{ "N/A" }}</p>
+                <p class="list-group-item-text">
+                    Your Rating:
+                    {% if user_rating %}
+                        {% if user_rating.rating  < 3.0 %}
+                            <span class="badge badge-pill badge-warning">
+                              {{ user_rating.rating }}/5
+                            </span>
+                        {% else %}
+                            <span class="badge badge-pill badge-success">
+                              {{ user_rating.rating }}/5
+                            </span>
+                        {% endif %}
+                    {% else %}
+                        <span class="badge badge-pill badge-info">N/A</span>
+                    {% endif %}
+                </p>
             {% endif %}
             <div class="plot">
                 {{ movie.plot }}
             </div>
         </div>
     </div>
+
 
     <div class="page-header">
         <h2>Similar Movies</h2>
@@ -103,7 +119,6 @@
                 </a>
             {% endfor %}
         </div>
-
     </div>
 
     <footer class="website">

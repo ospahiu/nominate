@@ -41,36 +41,36 @@
         </div>
         <div class="container">
             <div class="page-header">
-                <h1>Your Movies ({{ len(movies) }})</h1>
+                <h1>Your Movies ({{ len(current_user.rated_movies) }})</h1>
             </div>
 
             <div class="list-group">
-                {% for rating in current_user.ratings %}
-                    <a href="{{ "/movie/%d" % movies[loop.index0].movieid }}" class="list-group-item">
+                {% for movie, rating in current_user.rated_movies.items() %}
+                    <a href="{{ "/movie/%d" % movie.movieid }}" class="list-group-item">
                         <div style="margin: auto; ">
                             <div style="float: left;">
-                                <img src="{{ "../static/images/movies/%d.jpg" % movies[loop.index0].movieid }}"
+                                <img src="{{ "../static/images/movies/%d.jpg" % movie.movieid }}"
                                      class="smallThumbnail"/>
                             </div>
                             <div style="margin-left: 7%;">
-                                <h4 class="list-group-item-heading">{{ movies[loop.index0].title }}
-                                    <span>({{ movies[loop.index0].year }})</span>
-                                    {% if not movies[loop.index0].average_rating %}
+                                <h4 class="list-group-item-heading">{{ movie.title }}
+                                    <span>({{ movie.year }})</span>
+                                    {% if not movie.average_rating %}
                                         <span class="badge badge-pill badge-info">
                                         N/A
                                     </span>
 
-                                    {% elif movies[loop.index0].average_rating < 3.0 %}
+                                    {% elif movie.average_rating < 3.0 %}
                                         <span class="badge badge-pill badge-warning">
-                                        {{ movies[loop.index0].average_rating }}
+                                        {{ movie.average_rating }}
                                     </span>
                                     {% else %}
                                         <span class="badge badge-pill badge-success">
-                                        {{ movies[loop.index0].average_rating }}
+                                        {{ movie.average_rating }}
                                     </span>
                                     {% endif %}
                                 </h4>
-                                <p class="list-group-item-text">Your Rating: {{ rating.rating }}/5</p>
+                                <p class="list-group-item-text">Your Rating: {{ rating }}/5</p>
                             </div>
 
                         </div>

@@ -1,11 +1,11 @@
 from flask import render_template, json, request, redirect
-from flask_login import login_required, login_user, logout_user, current_user
+from flask_login import login_required, login_user, logout_user, current_user, confirm_login
 from werkzeug import security
 from werkzeug.security import check_password_hash
 
 from nominate import app, login_manager
 from nominate.database import db_session
-from nominate.models import Movie, User
+from nominate.models import Movie, User, Rating
 
 
 @app.route("/")
@@ -24,11 +24,18 @@ def movies():
 
 @app.route("/movie/<int:movie_id>")
 def movie(movie_id):
-    return render_template('movie.html', movie=Movie.query.get(movie_id))
+    user_rating = None
+    if current_user.is_authenticated:
+        user_rating = Rating.query \
+            .filter(Rating.userid == current_user.userid) \
+            .filter(Rating.movieid == movie_id).first()
+    return render_template('movie.html', movie=Movie.query.get(movie_id), user_rating=user_rating)
 
 
 @app.route('/showSignUp')
 def showSignUp():
+    if current_user.is_authenticated:
+        return redirect("/")
     return render_template('signup.html')
 
 
@@ -75,6 +82,7 @@ def validateLogin():
         if not user.passcode or check_password_hash(user.passcode, _password):
             print(user)
             login_user(user)
+            confirm_login()
             return redirect("/dashboard")
     return render_template('error.html', error='Wrong Email address or Password.')
 
@@ -82,9 +90,9 @@ def validateLogin():
 @app.route('/dashboard')
 @login_required
 def userHome():
-    movies = [Movie.query.get(rating.movieid) for rating in current_user.ratings]
+    # movies = [Movie.query.get(rating.movieid) for rating in current_user.ratings]
     # print(movies[0].average_rating)
-    return render_template('dashboard.html', movies=movies)
+    return render_template('dashboard.html')
 
 
 @app.route("/logout")
@@ -96,6 +104,8 @@ def logout():
 
 @app.route('/showSignIn')
 def showSignin():
+    if current_user.is_authenticated:
+        return redirect("/")
     return render_template('signin.html')
 
 @app.teardown_appcontext

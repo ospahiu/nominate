@@ -36,7 +36,9 @@
     <div class="homebanner">
         <h1>Get Movie Recommendations</h1>
         <p class="lead"></p>
-        <p><a class="btn btn-lg btn-primary" href="showSignUp" role="button">Sign up today</a>
+        {% if not current_user.is_authenticated %}
+            <p><a class="btn btn-lg btn-primary" href="/showSignUp" role="button">Sign up today</a>
+        {% endif %}
         </p>
     </div>
 

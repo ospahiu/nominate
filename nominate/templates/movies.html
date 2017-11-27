@@ -44,6 +44,47 @@
     </div>
 
 
+    {% if current_user.is_authenticated %}
+        <div class="page-header">
+            <h2>We've predicted you might also like</h2>
+            <hr/>
+            <div class="scrollmenu">
+
+                {% for predicted_movie in current_user.predictive_movies[:10] %}
+                    <a style="flex-grow: 1;" href="{{ "/movie/%d" % predicted_movie.movieid }}" class="list-group-item">
+                        <div style="display: flex;  width: 50%; margin-top: 5px; margin-bottom: 10px">
+                            <div>
+                                <img src="{{ "../static/images/movies/%d.jpg" % predicted_movie.movieid }}"
+                                     class="thumbnail"/>
+                            </div>
+                            <div style="margin-left: 10px; flex-grow: 1;">
+                                <h6>{{ predicted_movie.title }} ({{ predicted_movie.year }})</h6>
+                                <div>Score:
+                                    {% if not predicted_movie.average_rating %}
+                                        <span class="badge badge-pill badge-info">N/A</span>
+                                    {% elif predicted_movie.average_rating < 3.0 %}
+                                        <span class="badge badge-pill badge-warning">
+                                          {{ predicted_movie.average_rating }}
+                                      </span>
+                                    {% else %}
+                                        <span class="badge badge-pill badge-success">
+                                          {{ predicted_movie.average_rating }}
+                                      </span>
+                                    {% endif %}
+                                </div>
+                                <div>Director: {{ predicted_movie.director }}</div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+
+    {% endif %}
+
+    <h2 style="margin-top: 15px">All Movies</h2>
+    <hr/>
     <div class="row">
         {% for movie in movies %}
             <div style="padding-bottom: 20px;" class="col">

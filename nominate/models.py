@@ -23,7 +23,7 @@ class Movie(Base):
     def similar_movies(self):
         return [Movie.query.get(similarity.movieid_j)
                 for similarity in
-                sorted(self.similarities, key=lambda similarity: similarity.cosine_similarity_score)
+                sorted(self.similarities, key=lambda similarity: similarity.cosine_similarity_score, reverse=True)
                 if similarity.movieid_j != self.movieid]
 
     @hybrid_property
@@ -91,6 +91,18 @@ class User(UserMixin, Base):
     passcode = Column(String())
     ratings = relationship('Rating', backref='user')
     predictive_ratings = relationship('PredictiveRating', backref='user')
+
+    @hybrid_property
+    def rated_movies(self):
+        return {Movie.query.get(rating.movieid): rating.rating for rating in self.ratings}
+
+    @hybrid_property
+    def predictive_movies(self):
+        return [Movie.query.get(predictive_rating.movieid)
+                for predictive_rating in
+                sorted(self.predictive_ratings,
+                       key=lambda predictive_rating: predictive_rating.predictive_rating,
+                       reverse=True)]
 
     def get_id(self):
         return self.userid
