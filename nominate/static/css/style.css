@@ -25,14 +25,14 @@ input.search[type=text] {
     /*background-image: url('../images/search-icon.png');*/
     background-position: 10px 10px;
     background-repeat: no-repeat;
-    margin-top: 9px;
+    margin-top: 10px;
     padding: 5px 10px 5px 20px;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
 }
 
 input.search[type=text]:focus {
-    width: 200%;
+    width: 180%;
 }
 
 
