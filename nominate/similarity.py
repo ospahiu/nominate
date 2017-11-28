@@ -61,11 +61,7 @@ def compute_predictive_ratings():
                                                      userid=user.userid,
                                                      predictive_rating=predictive_rating_score)
                 db_session.add(predictive_rating)
-                # db_session.commit()
+                db_session.commit()
             elif query.first().predictive_rating != predictive_rating_score:
                 query.update(dict(predictive_rating=predictive_rating_score))
-                # db_session.commit()
-
-
-compute_predictive_ratings()
-exit(0)
+                db_session.commit()

@@ -48,8 +48,6 @@ class Movie(Base):
         # True at the same time
         return not (self == other)
 
-
-
     def __repr__(self):
         return "<Id: {}, Title: {}, Genres {}, Ratings: {}, Similariites: {}".format(self.movieid,
                                                                                      self.title,
