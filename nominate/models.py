@@ -37,6 +37,18 @@ class Movie(Base):
             return round(statistics.mean(rating.rating for rating in self.ratings), 1)
         return None
 
+    def __hash__(self):
+        return hash(self.movieid)
+
+    def __eq__(self, other):
+        return self.movieid == other.movieid
+
+    def __ne__(self, other):
+        # Not strictly necessary, but to avoid having both x==y and x!=y
+        # True at the same time
+        return not (self == other)
+
+
 
     def __repr__(self):
         return "<Id: {}, Title: {}, Genres {}, Ratings: {}, Similariites: {}".format(self.movieid,
@@ -96,6 +108,10 @@ class User(UserMixin, Base):
     passcode = Column(String())
     ratings = relationship('Rating', backref='user')
     predictive_ratings = relationship('PredictiveRating', backref='user')
+
+    @hybrid_property
+    def not_rated_movies(self):
+        return {movie for movie in Movie.query.all() if movie not in self.rated_movies.keys()}
 
     @hybrid_property
     def rated_movies(self):

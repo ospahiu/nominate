@@ -1,67 +1,7 @@
-from collections import defaultdict
-
 from nominate.database import db_session
-from nominate.models import Similarity, Movie, User
+from nominate.models import Similarity, Movie, User, PredictiveRating
 from nominate.utilities import cos_sim
 
-
-# random.seed(1)  # Consistent test data.
-#
-# conn = sqlite3.connect('nominate')
-#
-#
-# def get_all_movies(connection):
-#     movies = {}
-#     cursor = connection.cursor()
-#     cursor.execute("SELECT * FROM movies")
-#     rows = cursor.fetchall()
-#     for movie_result in rows:
-#         movie = Movie(*movie_result)
-#         cursor.execute("SELECT userid, rating FROM ratings WHERE movieid=?", (movie.id,))
-#         ratings = cursor.fetchall()
-#         for user_id, rating in ratings:
-#             movie.ratings[user_id] = rating
-#         movies[movie.id] = movie
-#         # print(movie)
-#     return movies
-#
-#
-# def get_all_users(connection):
-#     users = {}
-#     cursor = connection.cursor()
-#     cursor.execute("SELECT * FROM users")
-#     rows = cursor.fetchall()
-#     for user_result in rows:
-#         user = User(*user_result)
-#         cursor.execute("SELECT movieid, rating FROM ratings WHERE userid=?", (user.id,))
-#         ratings = cursor.fetchall()
-#         for movieid, rating in ratings:
-#             user.ratings[movieid] = rating
-#         users[user.id] = user
-#         # print(movie)
-#     return users
-#
-#
-# def get_user_by_id(connection, id):
-#     cursor = conn.cursor()
-#     cursor.execute("SELECT * FROM users WHERE userid=?", (id,))
-#     result = cursor.fetchone()
-#     return User(*result) if result else None
-#
-#
-# def get_movie_by_id(connection, id):
-#     cursor = conn.cursor()
-#     cursor.execute("SELECT * FROM movies WHERE movieid=?", (id,))
-#     result = cursor.fetchone()
-#     return Movie(*result) if result else None
-#
-#
-# movies = get_all_movies(conn)
-# users = get_all_users(conn)
-#
-#
-# print(users[4])
-# 2 Second algorithm.
 
 def compute_item_based_similarity_model():
     for movie_i in Movie.query.all():
@@ -89,76 +29,46 @@ def compute_item_based_similarity_model():
                     db_session.commit()
 
 
-def dump_item_to_item_matrix(connection, item_item_matrix):
-    cursor = connection.cursor()
-    for (movie_i, movie_j), cosine_similarity_score in item_item_matrix.items():
-        items = movie_i, movie_j, float(cosine_similarity_score)
-        cursor.execute('INSERT INTO similarities (movieid_i, movieid_j, cosine_similarity_score) VALUES (?,?,?)', items)
-    connection.commit()
-
-
-#
-# start = time.time()
-# item_item_matrix = compute_item_based_similarity_model(users=users, movies=movies)
-# print(item_item_matrix)
-# print(len(item_item_matrix))
-#
-# end = time.time()
-
-
-def dump_predictive_ratings_matrix(connection, predictive_ratings):
-    cursor = connection.cursor()
-    for (user_id, movie_id), predictive_rating in predictive_ratings.items():
-        items = user_id, movie_id, predictive_rating
-        cursor.execute('INSERT INTO predictive_ratings1 (movieid, userid, predictive_rating) VALUES (?,?,?)', items)
-    connection.commit()
-
-
-# print("Algorithm #2", end - start)
-#
-# user = users[1]
-# movie = movies[1]
-#
-# print(user, movie)
-
-def predict_rating(user, movie, item_item_matrix):
+def predict_rating(user, movie):
     weighted_sum = 0
     similarity_sum = 0
-    for movie_id, rating in user.ratings.items():
-        similarity = item_item_matrix[(movie_id, movie.id)]
-        weighted_sum += rating * similarity
-        similarity_sum += similarity
-    return weighted_sum / similarity_sum  # Returns prediction for given user and movie.
+    for rating in user.ratings:
+        similarity = Similarity.query \
+            .filter(Similarity.movieid_i == movie.movieid) \
+            .filter(Similarity.movieid_j == rating.movieid) \
+            .first()
+
+        if similarity:
+            # print('Movie1:',rating.movieid,'Movie2:',movie.movieid, )
+            # print(similarity.cosine_similarity_score)
+            weighted_sum += rating.rating * similarity.cosine_similarity_score
+            similarity_sum += similarity.cosine_similarity_score
+    return weighted_sum / (similarity_sum if similarity_sum else 1)  # Returns prediction for given user and movie.
 
 
-def compute_predictive_ratings(users, movies, item_item_matrix):
-    user_prediction_model = defaultdict(int)
-    for user_id, user in users.items():
-        for movie_id, movie in movies.items():
-            if movie_id not in user.ratings:
-                predictive_rating = predict_rating(user, movie, item_item_matrix)
-                user_prediction_model[(user_id, movie_id)] = predictive_rating
-    return user_prediction_model
+def compute_predictive_ratings():
+    count = 0
 
+    for user in User.query.all()[:1]:
+        for movie in user.not_rated_movies:
+
+            predictive_rating_score = predict_rating(user, movie)
+            query = PredictiveRating.query \
+                .filter(PredictiveRating.userid == user.userid) \
+                .filter(PredictiveRating.movieid == movie.movieid)
+
+            predictive_rating_exists = query.scalar()
+            if not predictive_rating_exists:
+                predictive_rating = PredictiveRating(movieid=movie.movieid,
+                                                     userid=user.userid,
+                                                     predictive_rating=predictive_rating_score)
+                db_session.add(predictive_rating)
+                # db_session.commit()
+            elif query.first().predictive_rating != predictive_rating_score:
+                query.update(dict(predictive_rating=predictive_rating_score))
+                # db_session.commit()
+
+    print(count)
 
 compute_predictive_ratings()
-
-#
-#
-# print(compute_predictive_ratings(users, movies, item_item_matrix))
-#
-# conn.close()
-#
-
-
-
-# print("----------------Test cases ---------------")
-# print("Test Case 1:", item_item_matrix[(22, 99)])
-# print("Test Case 2:", item_item_matrix[(15, 87)])
-# print("Test Case 3:", item_item_matrix[(99, 66)])
-# print("Test Case 4:", item_item_matrix[(91, 0)])
-# print("Test Case 4:", item_item_matrix[(67, 95)])
-# print("Test Case 4:", item_item_matrix[(73, 23)])
-# print("Test Case 4:", item_item_matrix[(51, 8)])
-# print("Test Case 4:", item_item_matrix[(42, 79)])
-# print("Test Case 4:", item_item_matrix[(10, 7)])
+exit(0)
