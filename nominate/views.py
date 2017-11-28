@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from flask import render_template, json, request, redirect
 from flask_login import login_required, login_user, logout_user, current_user, confirm_login
 from werkzeug import security
@@ -10,6 +12,7 @@ from nominate.models import Movie, User, Rating
 
 @app.route("/")
 def index():
+    compute_item_based_similarity_model()
     return render_template('index.html')
 
 
@@ -60,6 +63,20 @@ def rate(movie_id):
     # print(current_user.username, "Rating:", rating_value, Movie.query.get(movie_id).title)
     # print("Rate hit")
     return json.dumps({'message': '/rate hit.'})
+
+
+def compute_item_based_similarity_model():
+    item_item_matrix = defaultdict(int)
+    current_movie_ratings_to_per_shared_users = defaultdict(list)
+    ratings_to_compare_to_per_shared_users = defaultdict(list)
+
+    for movie_i in Movie.query.all()[:10]:
+        for movie_j in Movie.query.all()[:10]:
+            ratings_i = db_session.query(Rating).filter(Rating.movieid == movie_i.movieid).all()
+            ratings_j = db_session.query(Rating).filter(Rating.movieid == movie_j.movieid).all()
+
+            print("Movie i:", movie_i.movieid, "Movie j:", movie_j.movieid, "Ratings 1:", len(ratings_i))
+            print("Ratings 2:", len(ratings_j))
 
 
 @app.route('/signUp', methods=['POST'])
@@ -172,6 +189,6 @@ def load_user(user_id):
 #         # print(movie)
 #     return users
 
-# if __name__ == "__main__":
+# compute_item_based_similarity_model()
 #     # print("Hello World")
 #     app.run(debug=True)  # To propagate changes.

@@ -20,6 +20,10 @@ class Movie(Base):
     similarities = relationship('Similarity', backref='movie')
 
     @hybrid_property
+    def reviewers(self):
+        return [User.query.get(rating.userid) for rating in self.ratings]
+
+    @hybrid_property
     def similar_movies(self):
         return [Movie.query.get(similarity.movieid_j)
                 for similarity in
