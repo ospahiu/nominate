@@ -47,9 +47,7 @@ def predict_rating(user, movie):
 
 
 def compute_predictive_ratings():
-    count = 0
-
-    for user in User.query.all()[:1]:
+    for user in User.query.all():
         for movie in user.not_rated_movies:
 
             predictive_rating_score = predict_rating(user, movie)
@@ -68,7 +66,6 @@ def compute_predictive_ratings():
                 query.update(dict(predictive_rating=predictive_rating_score))
                 # db_session.commit()
 
-    print(count)
 
 compute_predictive_ratings()
 exit(0)
