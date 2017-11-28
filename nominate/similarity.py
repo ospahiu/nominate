@@ -102,10 +102,21 @@ def compute_item_based_similarity_model1():
                     .filter(Similarity.movieid_i == movie_i.movieid)
                 similarity_exists = db_session.query(query.exists()).scalar()
 
-                if similarity_exists:
+                if not similarity_exists:
+                    similarity = Similarity(movie_i=movie_i.movieid,
+                                            movie_j=movie_j.movieid,
+                                            cosine_similarity_score=cos_score)
+                    db_session.add(similarity)
+                    # db_session.commit()
+                elif query.first().cosine_similarity_score != cos_score:
+                    # print(similarity_exists, cos_score, query.first().cosine_similarity_score)
                     query.update(dict(cosine_similarity_score=cos_score))
                     similarity_counter += 1
                     # db_session.commit()
+                else:
+                    # print("No change in score")
+                    similarity_counter += 1
+
 
                     # item_item_matrix[(movie_i.movieid, movie_j.movieid)] = cos_score
     print(similarity_counter)
