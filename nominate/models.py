@@ -21,14 +21,15 @@ class Movie(Base):
 
     @hybrid_property
     def reviewers(self):
-        return [User.query.get(rating.userid) for rating in self.ratings]
+        return {User.query.get(rating.userid) for rating in self.ratings}
 
     @hybrid_property
     def similar_movies(self):
         return [Movie.query.get(similarity.movieid_j)
                 for similarity in
                 sorted(self.similarities, key=lambda similarity: similarity.cosine_similarity_score, reverse=True)
-                if similarity.movieid_j != self.movieid]
+                if similarity.movieid_j != self.movieid and
+                similarity.cosine_similarity_score != 1.0]
 
     @hybrid_property
     def average_rating(self):
@@ -107,6 +108,17 @@ class User(UserMixin, Base):
                 sorted(self.predictive_ratings,
                        key=lambda predictive_rating: predictive_rating.predictive_rating,
                        reverse=True)]
+
+    def __hash__(self):
+        return hash(self.userid)
+
+    def __eq__(self, other):
+        return self.userid == other.userid
+
+    def __ne__(self, other):
+        # Not strictly necessary, but to avoid having both x==y and x!=y
+        # True at the same time
+        return not (self == other)
 
     def get_id(self):
         return self.userid

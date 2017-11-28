@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 from flask import render_template, json, request, redirect
 from flask_login import login_required, login_user, logout_user, current_user, confirm_login
 from werkzeug import security
@@ -8,11 +6,11 @@ from werkzeug.security import check_password_hash
 from nominate import app, login_manager
 from nominate.database import db_session
 from nominate.models import Movie, User, Rating
+from nominate.similarity import compute_item_based_similarity_model
 
 
 @app.route("/")
 def index():
-    compute_item_based_similarity_model()
     return render_template('index.html')
 
 
@@ -43,6 +41,14 @@ def showSignUp():
 
 
 @login_required
+@app.route('/similarity')
+def similarity():
+    if current_user.username != 'admin':
+        return redirect("/")
+    compute_item_based_similarity_model()
+    return json.dumps({'message': 'Similarity computation complete.'})
+
+@login_required
 @app.route('/rate/<int:movie_id>', methods=['POST'])
 def rate(movie_id):
     rating_value = int(request.form["star"])
@@ -52,31 +58,13 @@ def rate(movie_id):
     has_user_rated_movie = db_session.query(query.exists()).scalar()
 
     if not has_user_rated_movie:
-        # print("Not_rated")
         rating = Rating(userid=current_user.userid, movieid=movie_id, rating=rating_value)
         db_session.add(rating)
         db_session.commit()
     elif query.first().rating != rating_value:
         query.update(dict(rating=rating_value))
-        # print("Rated differently.", rating)
         db_session.commit()
-    # print(current_user.username, "Rating:", rating_value, Movie.query.get(movie_id).title)
-    # print("Rate hit")
     return json.dumps({'message': '/rate hit.'})
-
-
-def compute_item_based_similarity_model():
-    item_item_matrix = defaultdict(int)
-    current_movie_ratings_to_per_shared_users = defaultdict(list)
-    ratings_to_compare_to_per_shared_users = defaultdict(list)
-
-    for movie_i in Movie.query.all()[:10]:
-        for movie_j in Movie.query.all()[:10]:
-            ratings_i = db_session.query(Rating).filter(Rating.movieid == movie_i.movieid).all()
-            ratings_j = db_session.query(Rating).filter(Rating.movieid == movie_j.movieid).all()
-
-            print("Movie i:", movie_i.movieid, "Movie j:", movie_j.movieid, "Ratings 1:", len(ratings_i))
-            print("Ratings 2:", len(ratings_j))
 
 
 @app.route('/signUp', methods=['POST'])
@@ -156,7 +144,6 @@ def shutdown_session(exception=None):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
-
 
 # def get_all_movies(connection):
 #     movies = {}
