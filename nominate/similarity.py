@@ -83,19 +83,20 @@ def compute_item_based_similarity_model(users, movies):
     return item_item_matrix
 
 
-start = time.time()
-item_item_matrix = compute_item_based_similarity_model(users=users, movies=movies)
-print(item_item_matrix)
-print(len(item_item_matrix))
-end = time.time()
-
-
 def dump_item_to_item_matrix(connection, item_item_matrix):
     cursor = connection.cursor()
     for (movie_i, movie_j), cosine_similarity_score in item_item_matrix.items():
         items = movie_i, movie_j, float(cosine_similarity_score)
         cursor.execute('INSERT INTO similarities (movieid_i, movieid_j, cosine_similarity_score) VALUES (?,?,?)', items)
     connection.commit()
+
+
+start = time.time()
+item_item_matrix = compute_item_based_similarity_model(users=users, movies=movies)
+print(item_item_matrix)
+print(len(item_item_matrix))
+
+end = time.time()
 
 
 def dump_predictive_ratings_matrix(connection, predictive_ratings):
