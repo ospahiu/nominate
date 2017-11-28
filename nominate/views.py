@@ -39,6 +39,36 @@ def showSignUp():
     return render_template('signup.html')
 
 
+@login_required
+@app.route('/rate/<int:movie_id>', methods=['POST'])
+def rate(movie_id):
+    rating_value = int(request.form["star"])
+    query = Rating.query. \
+        filter(Rating.userid == current_user.userid) \
+        .filter(Rating.movieid == movie_id)
+    has_user_rated_movie = db_session.query(query.exists()).scalar()
+    if not has_user_rated_movie:
+        print("Not_rated")
+        rating = Rating(userid=current_user.userid, movieid=movie_id, rating=rating_value)
+        db_session.add(rating)
+        db_session.commit()
+    elif query.first().rating != rating_value:
+        rating = query.first()
+        rating.rating = rating_value
+        print("Rated differently.", rating)
+        db_session.commit()
+    else:
+        print("Rated the same")
+        print(query.all())
+        # Update rating
+        # m = Model.query.first()
+        # m.counter = Model.counter + 1
+
+    print(current_user.username, "Rating:", rating_value, Movie.query.get(movie_id).title)
+    print("Rate hit")
+    return json.dumps({'message': '/rate hit.'})
+
+
 @app.route('/signUp', methods=['POST'])
 def signUp():
     # read the posted values from the UI

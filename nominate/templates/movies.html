@@ -44,7 +44,7 @@
     </div>
 
 
-    {% if current_user.is_authenticated %}
+    {% if current_user.is_authenticated and current_user.predictive_movies %}
         <div class="page-header">
             <h2>We've predicted you might also like</h2>
             <hr/>
@@ -79,8 +79,6 @@
                 {% endfor %}
             </div>
         </div>
-
-
     {% endif %}
 
     <h2 style="margin-top: 15px">All Movies</h2>
