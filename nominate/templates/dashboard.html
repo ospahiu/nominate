@@ -9,11 +9,31 @@
     <link href="../static/css/signup.css" rel="stylesheet">
     <link href="../static/css/style.css" rel="stylesheet">
     <link rel="shortcut icon" href="../static/images/favicon.ico">
-
+    <script type=text/javascript
+            src="{{ url_for('static', filename='../static/bower_components/jquery/dist/jquery.js') }}"></script>
 </head>
 
 <body>
 
+
+<script>
+    $(function () {
+        $('#btnGenerateRecommendations').click(function () {
+
+            $.ajax({
+                url: '/generateRecommendations',
+                data: $('form').serialize(),
+                type: 'POST',
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
 
 <div class="container">
     <img src="../static/images/logo.png" class="logo"/>
@@ -40,6 +60,24 @@
             <h1 style="text-shadow: 3px 3px #33691E;">Welcome to your Dashboard {{ current_user.username }}</h1>
         </div>
         <div class="container">
+
+            {% if current_user.username == 'admin' %}
+                <div class="page-header">
+                    <h1>Admin Controls</h1>
+                    <hr/>
+
+                    <form>
+                        <button style="width: 300px" id="btnGenerateRecommendations"
+                                class="btn btn-lg btn-primary btn-block" type="button">
+                            Run Recommendations
+                        </button>
+                    </form>
+                    <hr/>
+                </div>
+            {% endif %}
+
+
+
             <div class="page-header">
                 <h1>Your Movies ({{ len(current_user.rated_movies) }})</h1>
             </div>

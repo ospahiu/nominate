@@ -1,8 +1,10 @@
+from nominate import celery
 from nominate.database import db_session
 from nominate.models import Similarity, Movie, User, PredictiveRating
 from nominate.utilities import cos_sim
 
 
+@celery.task
 def compute_item_based_similarity_model():
     for movie_i in Movie.query.all():
         for movie_j in Movie.query.all():
@@ -37,19 +39,16 @@ def predict_rating(user, movie):
             .filter(Similarity.movieid_i == movie.movieid) \
             .filter(Similarity.movieid_j == rating.movieid) \
             .first()
-
         if similarity:
-            # print('Movie1:',rating.movieid,'Movie2:',movie.movieid, )
-            # print(similarity.cosine_similarity_score)
             weighted_sum += rating.rating * similarity.cosine_similarity_score
             similarity_sum += similarity.cosine_similarity_score
     return weighted_sum / (similarity_sum if similarity_sum else 1)  # Returns prediction for given user and movie.
 
 
+@celery.task
 def compute_predictive_ratings():
     for user in User.query.all():
         for movie in user.not_rated_movies:
-
             predictive_rating_score = predict_rating(user, movie)
             query = PredictiveRating.query \
                 .filter(PredictiveRating.userid == user.userid) \

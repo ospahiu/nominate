@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash
 from nominate import app, login_manager
 from nominate.database import db_session
 from nominate.models import Movie, User, Rating
-from nominate.similarity import compute_item_based_similarity_model
+from nominate.similarity import compute_item_based_similarity_model, compute_predictive_ratings
 
 
 @app.route("/")
@@ -17,6 +17,7 @@ def index():
 @app.route("/about")
 def about():
     return render_template('about.html')
+
 
 @app.route("/movies")
 def movies():
@@ -41,12 +42,26 @@ def showSignUp():
 
 
 @login_required
-@app.route('/similarity')
+@app.route('/generateRecommendations', methods=['POST'])
 def similarity():
-    if current_user.username != 'admin':
-        return redirect("/")
-    compute_item_based_similarity_model()
-    return json.dumps({'message': 'Similarity computation complete.'})
+    if current_user.is_authenticated:
+        if current_user.username != 'admin':
+            return redirect("/")
+        print("hit")
+        compute_item_based_similarity_model.delay()
+        compute_predictive_ratings.delay()
+        return str(200)
+    return str(403)
+
+
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('error.html', error='Page forbidden.'), 403
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html', error='Page not found.'), 404
 
 @login_required
 @app.route('/rate/<int:movie_id>', methods=['POST'])
@@ -76,7 +91,6 @@ def signUp():
     # validate the received values
     if _name and _password:
         _hashed_password = security.generate_password_hash(_password)
-        print(_name, _hashed_password)
         user = User(username=_name, passcode=_hashed_password)
         db_session.add(user)
         db_session.commit()
@@ -89,8 +103,6 @@ def signUp():
 def search():
     # read the posted values from the UI
     _query = request.args.get('query')
-    print(_query)
-    print("hit")
     # validate the received values
     if _query:
         return render_template('results.html', movies=Movie.query.filter(Movie.title.ilike(_query)).all())
@@ -108,7 +120,6 @@ def validateLogin():
     user = User.query.filter(User.username == _username).first()
     if user:
         if not user.passcode or check_password_hash(user.passcode, _password):
-            print(user)
             login_user(user)
             confirm_login()
             return redirect("/dashboard")
@@ -118,8 +129,6 @@ def validateLogin():
 @app.route('/dashboard')
 @login_required
 def userHome():
-    # movies = [Movie.query.get(rating.movieid) for rating in current_user.ratings]
-    # print(movies[0].average_rating)
     return render_template('dashboard.html')
 
 
@@ -145,37 +154,3 @@ def shutdown_session(exception=None):
 def load_user(user_id):
     return User.query.get(user_id)
 
-# def get_all_movies(connection):
-#     movies = {}
-#     cursor = connection.cursor()
-#     cursor.execute("SELECT * FROM movies")
-#     rows = cursor.fetchall()
-#     for movie_result in rows:
-#         movie = Movie(*movie_result)
-#         cursor.execute("SELECT userid, rating FROM ratings WHERE movieid=?", (movie.id,))
-#         ratings = cursor.fetchall()
-#         for user_id, rating in ratings:
-#             movie.ratings[user_id] = rating
-#         movies[movie.id] = movie
-#         # print(movie)
-#     return movies
-#
-#
-# def get_all_users(connection):
-#     users = {}
-#     cursor = connection.cursor()
-#     cursor.execute("SELECT * FROM users")
-#     rows = cursor.fetchall()
-#     for user_result in rows:
-#         user = User(*user_result)
-#         cursor.execute("SELECT movieid, rating FROM ratings WHERE userid=?", (user.id,))
-#         ratings = cursor.fetchall()
-#         for movieid, rating in ratings:
-#             user.ratings[movieid] = rating
-#         users[user.id] = user
-#         # print(movie)
-#     return users
-
-# compute_item_based_similarity_model()
-#     # print("Hello World")
-#     app.run(debug=True)  # To propagate changes.
