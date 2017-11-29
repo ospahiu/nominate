@@ -66,8 +66,13 @@ functions follow a very standard item-to-item implementation as described in thi
 http://files.grouplens.org/papers/www10_sarwar.pdf
 
 These prediction results are stored in a PredictiveRating model in a similar way to the similarity score, and can be
-stored permanently; an nice upside that memory based collaborative filtering approaches don't have. The rest of the 
-application logic is there to support web application features including the following:
+stored permanently; an nice upside that memory based collaborative filtering approaches don't have. To run the 
+recommendations, you must be logged in as the 'admin' user who's password is 'password'. From here, if you have the
+redis application running on your host, as well as celery workers live, you'll be able to push a recommendation and 
+prediction job on the task queue where the updating of the similarity, and prediction models is executed based on the 
+latest ratings data.
+
+The rest of the application logic is there to support web application features including the following:
 
 - Task queue system
 - Authentication services

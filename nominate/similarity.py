@@ -1,4 +1,5 @@
-from nominate import celery
+import celery
+
 from nominate.database import db_session
 from nominate.models import Similarity, Movie, User, PredictiveRating
 from nominate.utilities import cos_sim
