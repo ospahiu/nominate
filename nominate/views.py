@@ -47,7 +47,6 @@ def similarity():
     if current_user.is_authenticated:
         if current_user.username != 'admin':
             return redirect("/")
-        print("hit")
         compute_item_based_similarity_model.delay()
         compute_predictive_ratings.delay()
         return str(200)
@@ -94,7 +93,9 @@ def signUp():
         user = User(username=_name, passcode=_hashed_password)
         db_session.add(user)
         db_session.commit()
-        return json.dumps({'message': 'User created successfully !'})
+        login_user(user)
+        confirm_login()
+        return redirect("/dashboard")
     else:
         return json.dumps({'html': '<span>Enter the required fields</span>'})
 
