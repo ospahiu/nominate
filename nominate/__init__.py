@@ -1,6 +1,5 @@
 import os
 
-# from celery import Celery
 from flask import Flask
 from flask_login import LoginManager
 
