@@ -93,6 +93,8 @@ def signUp():
         user = User(username=_name, passcode=_hashed_password)
         db_session.add(user)
         db_session.commit()
+
+        # TODO: Login user to dashboard.
         login_user(user)
         confirm_login()
         return redirect("/dashboard")

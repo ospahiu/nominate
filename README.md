@@ -86,11 +86,19 @@ The rest of the application logic is there to support web application features i
 
 ## Run Program
 
-Inside of the project root `/path/to/folder/nominate`, run the following below:
+Unzip cps842f17_prj_spahiu.zip
+Go inside of the project root `/cps842f17_prj_spahiu` in a shell. 
+Run the following below:
+
+### First steps (assuming all dependencies are installed).
+
+$ cd nominate 
+$ export FLASK_APP=nominate
+$ flask run
 
 ### Installation
-- `$ pip3 install -e .`
-- `$ pip install -r requirements.txt`
+
+- `$ pip3 install -r requirements.txt`
 - `$ yarn install`
 - `$ bower install`
 
@@ -99,137 +107,30 @@ Inside of the project root `/path/to/folder/nominate`, run the following below:
 - `$ flask run`
 - `$ celery -A nominate.celery worker` / you want to kill celery workers: `$ pkill -f "celery worker"`
 - `$ redis-server /usr/local/etc/redis.conf`
-- Type in `http://127.0.0.1:5000/` in your browser.
+
+Type in `http://127.0.0.1:5000/` in your browser to view the app.
 
 ## Package Contents:
 .
 ├── README.md
-├── __pycache__
-│   └── config.cpython-36.pyc
 ├── bower.json
-├── celery
 ├── config.py
 ├── gulpfile.js
-├── node_modules [391 entries exceeds filelimit, not opening dir]
 ├── nominate
 │   ├── __init__.py
-│   ├── __pycache__
-│   │   ├── __init__.cpython-36.pyc
-│   │   ├── database.cpython-36.pyc
-│   │   ├── models.cpython-36.pyc
-│   │   ├── similarity.cpython-36.pyc
-│   │   ├── utilities.cpython-36.pyc
-│   │   └── views.cpython-36.pyc
 │   ├── database.py
 │   ├── models.py
 │   ├── nominate.db
 │   ├── similarity.py
 │   ├── static
-│   │   ├── bower_components
-│   │   │   ├── bootstrap
-│   │   │   │   ├── CHANGELOG.md
-│   │   │   │   ├── Gemfile
-│   │   │   │   ├── Gemfile.lock
-│   │   │   │   ├── Gruntfile.js
-│   │   │   │   ├── ISSUE_TEMPLATE.md
-│   │   │   │   ├── LICENSE
-│   │   │   │   ├── README.md
-│   │   │   │   ├── bower.json
-│   │   │   │   ├── dist
-│   │   │   │   │   ├── css
-│   │   │   │   │   │   ├── bootstrap-theme.css
-│   │   │   │   │   │   ├── bootstrap-theme.css.map
-│   │   │   │   │   │   ├── bootstrap-theme.min.css
-│   │   │   │   │   │   ├── bootstrap-theme.min.css.map
-│   │   │   │   │   │   ├── bootstrap.css
-│   │   │   │   │   │   ├── bootstrap.css.map
-│   │   │   │   │   │   ├── bootstrap.min.css
-│   │   │   │   │   │   └── bootstrap.min.css.map
-│   │   │   │   │   ├── fonts
-│   │   │   │   │   │   ├── glyphicons-halflings-regular.eot
-│   │   │   │   │   │   ├── glyphicons-halflings-regular.svg
-│   │   │   │   │   │   ├── glyphicons-halflings-regular.ttf
-│   │   │   │   │   │   ├── glyphicons-halflings-regular.woff
-│   │   │   │   │   │   └── glyphicons-halflings-regular.woff2
-│   │   │   │   │   └── js
-│   │   │   │   │       ├── bootstrap.js
-│   │   │   │   │       ├── bootstrap.min.js
-│   │   │   │   │       └── npm.js
-│   │   │   │   ├── fonts
-│   │   │   │   │   ├── glyphicons-halflings-regular.eot
-│   │   │   │   │   ├── glyphicons-halflings-regular.svg
-│   │   │   │   │   ├── glyphicons-halflings-regular.ttf
-│   │   │   │   │   ├── glyphicons-halflings-regular.woff
-│   │   │   │   │   └── glyphicons-halflings-regular.woff2
-│   │   │   │   ├── grunt
-│   │   │   │   │   ├── bs-commonjs-generator.js
-│   │   │   │   │   ├── bs-glyphicons-data-generator.js
-│   │   │   │   │   ├── bs-lessdoc-parser.js
-│   │   │   │   │   ├── bs-raw-files-generator.js
-│   │   │   │   │   ├── change-version.js
-│   │   │   │   │   ├── configBridge.json
-│   │   │   │   │   ├── npm-shrinkwrap.json
-│   │   │   │   │   └── sauce_browsers.yml
-│   │   │   │   ├── js
-│   │   │   │   │   ├── affix.js
-│   │   │   │   │   ├── alert.js
-│   │   │   │   │   ├── button.js
-│   │   │   │   │   ├── carousel.js
-│   │   │   │   │   ├── collapse.js
-│   │   │   │   │   ├── dropdown.js
-│   │   │   │   │   ├── modal.js
-│   │   │   │   │   ├── popover.js
-│   │   │   │   │   ├── scrollspy.js
-│   │   │   │   │   ├── tab.js
-│   │   │   │   │   ├── tooltip.js
-│   │   │   │   │   └── transition.js
-│   │   │   │   ├── less [42 entries exceeds filelimit, not opening dir]
-│   │   │   │   ├── nuget
-│   │   │   │   │   ├── MyGet.ps1
-│   │   │   │   │   ├── bootstrap.less.nuspec
-│   │   │   │   │   └── bootstrap.nuspec
-│   │   │   │   ├── package.js
-│   │   │   │   └── package.json
-│   │   │   ├── jquery
-│   │   │   │   ├── AUTHORS.txt
-│   │   │   │   ├── LICENSE.txt
-│   │   │   │   ├── README.md
-│   │   │   │   ├── bower.json
-│   │   │   │   ├── dist
-│   │   │   │   │   ├── core.js
-│   │   │   │   │   ├── jquery.js
-│   │   │   │   │   ├── jquery.min.js
-│   │   │   │   │   ├── jquery.min.map
-│   │   │   │   │   ├── jquery.slim.js
-│   │   │   │   │   ├── jquery.slim.min.js
-│   │   │   │   │   └── jquery.slim.min.map
-│   │   │   │   ├── external
-│   │   │   │   │   └── sizzle
-│   │   │   │   │       ├── LICENSE.txt
-│   │   │   │   │       └── dist
-│   │   │   │   │           ├── sizzle.js
-│   │   │   │   │           ├── sizzle.min.js
-│   │   │   │   │           └── sizzle.min.map
-│   │   │   │   └── src [34 entries exceeds filelimit, not opening dir]
-│   │   │   └── react
-│   │   │       ├── LICENSE
-│   │   │       ├── PATENTS
-│   │   │       ├── bower.json
-│   │   │       ├── react-dom-server.js
-│   │   │       ├── react-dom-server.min.js
-│   │   │       ├── react-dom.js
-│   │   │       ├── react-dom.min.js
-│   │   │       ├── react-with-addons.js
-│   │   │       ├── react-with-addons.min.js
-│   │   │       ├── react.js
-│   │   │       └── react.min.js
 │   │   ├── css
 │   │   │   ├── signup.css
 │   │   │   └── style.css
 │   │   ├── images
 │   │   │   ├── favicon.ico
 │   │   │   ├── logo.png
-│   │   │   ├── movies [100 entries exceeds filelimit, not opening dir]
+│   │   │   ├── movies
+│   │   │   │   ├── [Many movie poster images]
 │   │   │   ├── search-icon.png
 │   │   │   └── user-icon.png
 │   │   └── scripts
@@ -237,6 +138,7 @@ Inside of the project root `/path/to/folder/nominate`, run the following below:
 │   │       │   └── main.js
 │   │       └── jsx
 │   │           └── main.js
+│   ├── tasks.py
 │   ├── templates
 │   │   ├── about.html
 │   │   ├── dashboard.html
@@ -249,20 +151,13 @@ Inside of the project root `/path/to/folder/nominate`, run the following below:
 │   │   └── signup.html
 │   ├── utilities.py
 │   └── views.py
-├── nominate.egg-info
-│   ├── PKG-INFO
-│   ├── SOURCES.txt
-│   ├── dependency_links.txt
-│   ├── requires.txt
-│   └── top_level.txt
 ├── package.json
 ├── requirements.txt
 ├── setup.py
-├── yarn-error.log
 └── yarn.lock
 
 
-Libraries Used:
+## Libraries Used:
 
 - Flask 0.12.2
 - python 3.6.3
@@ -274,5 +169,6 @@ Libraries Used:
 - Celery 4.1.0
 - SQLite format 3
 - Bower 1.8.2
+- pip3 9.0.1
 
 If you have any questions, please feel free to contact olsi.spahiu@ryerson.ca
