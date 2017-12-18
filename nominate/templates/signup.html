@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Nominate</title>
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-    <link href="../static/css/signup.css" rel="stylesheet">
-    <link href="../static/css/style.css" rel="stylesheet">
-    <link href="../static/bower_components/jquery/dist/jquery.js">
-    <link rel="shortcut icon" href="../static/images/favicon.ico">
+  <title>Nominate</title>
+  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+  <link href="../static/css/signup.css" rel="stylesheet">
+  <link href="../static/css/style.css" rel="stylesheet">
+  <link href="../static/bower_components/jquery/dist/jquery.js">
+  <link rel="shortcut icon" href="../static/images/favicon.ico">
+  <script type=text/javascript
+          src="{{ url_for('static', filename='../static/bower_components/jquery/dist/jquery.js') }}">
+  </script>
 </head>
 <body>
-
-<script type=text/javascript
-        src="{{ url_for('static', filename='../static/bower_components/jquery/dist/jquery.js') }}"></script>
 <script>
     $(function () {
         $('#btnSignUp').click(function () {
@@ -31,40 +31,37 @@
         });
     });
 </script>
-
 <div class="container">
-    <img src="../static/images/logo.png" class="logo"/>
-    <div class="header">
-        <nav>
-            <ul class="nav nav-pills pull-right">
-                <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
-                <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
-                <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
-                <li role="presentation"><a class="more" href="/showSignIn">Sign In</a></li>
-                <li role="presentation" class="active"><a class="more" href="#">Sign Up</a></li>
-            </ul>
-        </nav>
-    </div>
+  <img src="../static/images/logo.png" class="logo"/>
+  <div class="header">
+    <nav>
+      <ul class="nav nav-pills pull-right">
+        <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
+        <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
+        <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
+        <li role="presentation"><a class="more" href="/showSignIn">Sign In</a></li>
+        <li role="presentation" class="active"><a class="more" href="#">Sign Up</a></li>
+      </ul>
+    </nav>
+  </div>
 
-    <div class="jumbotron" style="width: 50%;margin:auto; margin-top: 15px;">
-        <h1 style="text-align: center;">Sign up for an account!</h1>
-        <form class="form-signin">
-            <label for="inputName" class="sr-only">Name</label>
-            <input type="name" name="inputName" id="inputName" class="form-control" placeholder="Username" required
-                   autofocus>
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password"
-                   required>
+  <div class="jumbotron" style="width: 50%;margin:auto; margin-top: 15px;">
+    <h1 style="text-align: center;">Sign up for an account!</h1>
+    <form class="form-signin">
+      <label for="inputName" class="sr-only">Name</label>
+      <input type="name" name="inputName" id="inputName" class="form-control" placeholder="Username" required
+             autofocus/>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password"
+             required/>
+      <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Sign up</button>
+    </form>
+  </div>
 
-            <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Sign up</button>
-        </form>
-    </div>
 
-
-    <footer class="website">
-        <p>&copy; Olsi Spahiu, 2017</p>
-    </footer>
-
+  <footer class="website">
+    <p>&copy; Olsi Spahiu, 2017</p>
+  </footer>
 </div>
 </body>
 </html>

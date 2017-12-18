@@ -44,8 +44,6 @@ class Movie(Base):
         return self.movieid == other.movieid
 
     def __ne__(self, other):
-        # Not strictly necessary, but to avoid having both x==y and x!=y
-        # True at the same time
         return not (self == other)
 
     def __repr__(self):
@@ -130,8 +128,6 @@ class User(UserMixin, Base):
         return self.userid == other.userid
 
     def __ne__(self, other):
-        # Not strictly necessary, but to avoid having both x==y and x!=y
-        # True at the same time
         return not (self == other)
 
     def get_id(self):

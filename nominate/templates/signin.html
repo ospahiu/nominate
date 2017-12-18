@@ -1,53 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Python Flask Bucket List App</title>
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-    <link href="../static/css/signup.css" rel="stylesheet">
-    <link href="../static/css/style.css" rel="stylesheet">
-    <link rel="shortcut icon" href="../static/images/favicon.ico">
-    <script type=text/javascript
-            src="{{ url_for('static', filename='../static/bower_components/jquery/dist/jquery.js') }}"></script>
+  <title>Nominate</title>
+  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+  <link href="../static/css/signup.css" rel="stylesheet">
+  <link href="../static/css/style.css" rel="stylesheet">
+  <link rel="shortcut icon" href="../static/images/favicon.ico">
+  <script type=text/javascript
+          src="{{ url_for('static', filename='../static/bower_components/jquery/dist/jquery.js') }}">
+  </script>
 </head>
-
 <body>
-
-
 <div class="container">
-    <img src="../static/images/logo.png" class="logo"/>
-    <div class="header">
-        <nav>
-            <ul class="nav nav-pills pull-right">
-                <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
-                <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
-                <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
-                <li role="presentation" class="active"><a class="more" href="#">Sign In</a></li>
-                <li role="presentation"><a class="more" href="/showSignUp">Sign Up</a></li>
-            </ul>
-        </nav>
-    </div>
+  <img src="../static/images/logo.png" class="logo"/>
+  <div class="header">
+    <nav>
+      <ul class="nav nav-pills pull-right">
+        <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
+        <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
+        <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
+        <li role="presentation" class="active"><a class="more" href="#">Sign In</a></li>
+        <li role="presentation"><a class="more" href="/showSignUp">Sign Up</a></li>
+      </ul>
+    </nav>
+  </div>
 
-    <div class="jumbotron" style="width: 50%;margin:auto; margin-top: 15px;">
-        <h1 style="text-align: center;">Sign into your account!</h1>
-        <form class="form-signin" action="/validateLogin" method="post">
-            <label for="inputUsername" class="sr-only">Username</label>
-            <input type="username" name="inputUsername" id="inputUsername" class="form-control" placeholder="Username"
-                   required autofocus>
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password"
-            >
+  <div class="jumbotron" style="width: 50%;margin:auto; margin-top: 15px;">
+    <h1 style="text-align: center;">Sign into your account!</h1>
+    <form class="form-signin" action="/validateLogin" method="post">
+      <label for="inputUsername" class="sr-only">Username</label>
+      <input type="username" name="inputUsername" id="inputUsername" class="form-control" placeholder="Username"
+             required autofocus/>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password"/>
+      <button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+  </div>
 
-            <button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        </form>
-    </div>
-
-
-    <footer class="website">
-        <p>&copy; Olsi Spahiu, 2017</p>
-    </footer>
-
+  <footer class="website">
+    <p>&copy; Olsi Spahiu, 2017</p>
+  </footer>
 </div>
 </body>
 </html>

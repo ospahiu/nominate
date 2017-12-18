@@ -2,76 +2,55 @@
 <html lang="en">
 
 <head>
-    <title>Nominate.com</title>
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-    <link href="../static/css/style.css" rel="stylesheet">
-    <link rel="shortcut icon" href="../static/images/favicon.ico">
+  <title>Nominate.com</title>
+  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+  <link href="../static/css/style.css" rel="stylesheet">
+  <link rel="shortcut icon" href="../static/images/favicon.ico">
 </head>
 <body>
 
-{#<script type=text/javascript#}
-{#        src="{{ url_for('static', filename='../static/bower_components/jquery/dist/jquery.js') }}"></script>#}
-{#<script>#}
-{#    $(function () {#}
-{#        $('#btnSearch').click(function () {#}
-{##}
-{#            $.ajax({#}
-{#                url: '/search',#}
-{#                data: $('form').serialize(),#}
-{#                type: 'POST',#}
-{#                success: function (response) {#}
-{#                    console.log(response);#}
-{#                },#}
-{#                error: function (error) {#}
-{#                    console.log(error);#}
-{#                }#}
-{#            });#}
-{#        });#}
-{#    });#}
-{#</script>#}
-
 <div class="container" style=" margin:0 auto; margin-top: 40px;">
-    <div class="header">
-        <nav>
-            <ul style="position:relative;" class="nav nav-pills" role="tablist">
-                <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
-                <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
-                {% if current_user.is_authenticated %}
-                    <li role="presentation"><a class="more" role="tab" href="/dashboard">Dashboard</a></li>
-                    <li role="presentation" class="active"><a class="more" href="/logout">Logout</a></li>
-                    <li style="position:absolute;right: 0;" role="presentation">
-                        <div style="margin-top: 12px; float: right;">
-                            <img style="display: inline-block;" src="../static/images/user-icon.png" class="usericon"/>
-                            <span style="margin-left: 10px; margin-top: 2px; float: right;">{{ current_user.username }}</span>
-                        </div>
-                    </li>
-                {% else %}
-                    <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
-                    <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
-
-    <div style="margin-bottom: 15%; margin-top: 15%;">
-        <img src="../static/images/logo.png" class="frontPageLogo"/>
-        <form action="{{ url_for('search') }}" method="get">
-            <div style=" margin:0 auto; align-items: center;width: 600px" class="input-group">
-                <input type="text" name="query" id="query" class="form-control" placeholder="Search for movies"
-                       required/>
-                <span class="input-group-btn">
-                    <button name="query" style="border-color: lightgrey;" class="btn btn-default" type="submit"><img
-                            style="height: auto; width: 10px;" src="../static/images/search-icon.png"/></button>
-                </span>
+  <div class="header">
+    <nav>
+      <ul style="position:relative;" class="nav nav-pills" role="tablist">
+        <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
+        <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
+        {% if current_user.is_authenticated %}
+          <li role="presentation"><a class="more" role="tab" href="/dashboard">Dashboard</a></li>
+          <li role="presentation" class="active"><a class="more" href="/logout">Logout</a></li>
+          <li style="position:absolute;right: 0;" role="presentation">
+            <div style="margin-top: 12px; float: right;">
+              <img style="display: inline-block;" src="../static/images/user-icon.png" class="usericon"/>
+              <span style="margin-left: 10px; margin-top: 2px; float: right;">{{ current_user.username }}</span>
             </div>
-        </form>
-    </div>
+          </li>
+        {% else %}
+          <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
+          <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
 
-    <footer class="website">
-        <p>&copy; Olsi Spahiu, 2017</p>
-    </footer>
+  <div style="margin-bottom: 15%; margin-top: 15%;">
+    <img src="../static/images/logo.png" class="frontPageLogo"/>
+    <form action="{{ url_for('search') }}" method="get">
+      <div style=" margin:0 auto; align-items: center;width: 600px" class="input-group">
+        <input type="text" name="query" id="query" class="form-control" placeholder="Search for movies"
+               required/>
+        <span class="input-group-btn">
+          <button name="query" style="border-color: lightgrey;" class="btn btn-default" type="submit">
+            <img style="height: auto; width: 10px;" src="../static/images/search-icon.png"/>
+          </button>
+        </span>
+      </div>
+    </form>
+  </div>
+
+  <footer class="website">
+    <p>&copy; Olsi Spahiu, 2017</p>
+  </footer>
 </div>
 </body>
-
 </html>

@@ -2,18 +2,17 @@
 <html lang="en">
 
 <head>
-    <title>Nominate.com</title>
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-    <link href="../static/css/style.css" rel="stylesheet">
-    <link rel="shortcut icon" href="../static/images/favicon.ico">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-    <script type=text/javascript
-            src="{{ url_for('static', filename='../static/bower_components/jquery/dist/jquery.js') }}"></script>
+  <title>Nominate.com</title>
+  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+  <link href="../static/css/style.css" rel="stylesheet">
+  <link rel="shortcut icon" href="../static/images/favicon.ico">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+  <script type=text/javascript
+          src="{{ url_for('static', filename='../static/bower_components/jquery/dist/jquery.js') }}">
+  </script>
 </head>
 <body>
-
-
 <script>
     $(function () {
         var bns = document.getElementsByName("star");
@@ -35,156 +34,126 @@
         }
     });
 </script>
-
-
 <div class="container" style="margin-top: 40px">
-    <img src="../static/images/logo.png" class="logo"/>
-    <div class="header">
-        <nav>
-            <ul style="position:relative;" class="nav nav-pills" role="tablist">
-                <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
-                <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
-                <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
-                {% if current_user.is_authenticated %}
-                    <li role="presentation"><a class="more" role="tab" href="/dashboard">Dashboard</a></li>
-                    <li role="presentation" class="active"><a class="more" href="/logout">Logout</a></li>
-                    <li style="position:absolute;right: 0;" role="presentation">
-                        <div style="margin-top: 12px; float: right;">
-                            <img style="display: inline-block;" src="../static/images/user-icon.png" class="usericon"/>
-                            <span style="margin-left: 10px; margin-top: 2px; float: right;">{{ current_user.username }}</span>
-                        </div>
-                    </li>
+  <img src="../static/images/logo.png" class="logo"/>
+  <div class="header">
+    <nav>
+      <ul style="position:relative;" class="nav nav-pills" role="tablist">
+        <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
+        <li role="presentation" class="active"><a class="more" role="tab" href="/about">About</a></li>
+        <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
+        {% if current_user.is_authenticated %}
+          <li role="presentation"><a class="more" role="tab" href="/dashboard">Dashboard</a></li>
+          <li role="presentation" class="active"><a class="more" href="/logout">Logout</a></li>
+          <li style="position:absolute;right: 0;" role="presentation">
+            <div style="margin-top: 12px; float: right;">
+              <img style="display: inline-block;" src="../static/images/user-icon.png" class="usericon"/>
+              <span style="margin-left: 10px; margin-top: 2px; float: right;">{{ current_user.username }}</span>
+            </div>
+          </li>
+        {% else %}
+          <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
+          <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="movieitembanner">
+    <h1 style="text-shadow: 3px 3px #FF0000;">{{ movie.title }}</h1>
+  </div>
+
+  <div style="display: flex; margin-top: 5px; margin-bottom: 10px">
+    <div>
+      <img src="{{ "../static/images/movies/%d.jpg" % movie.movieid }}" class="full"/>
+    </div>
+    <div style="margin-left: 10px; flex-grow: 1;">
+      <h2>({{ movie.year }})</h2>
+      <div><h4>Average:
+        {% if not movie.average_rating %}
+          <span class="badge badge-pill badge-info">N/A</span>
+        {% elif movie.average_rating < 3.0 %}
+          <span class="badge badge-pill badge-warning">{{ movie.average_rating }}</span>
+        {% else %}
+          <span class="badge badge-pill badge-success">{{ movie.average_rating }}</span>
+        {% endif %}
+
+      </h4>
+      </div>
+      <div><h4>Director: {{ movie.director }}</h4></div>
+      <div style="display: inline">
+        <h4 style="display: inline"><span>Genre(s):</span></h4>
+        {% for movie_genre in movie.genres %}
+          <span>{{ movie_genre.genre.genre }}</span>
+          {% if len(movie.genres) > 0 and loop.index0 < len(movie.genres) - 1 %}
+            <span>,</span>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div style="margin-top: 15px">
+        {% if current_user.is_authenticated %}
+          <div class="stars">
+            <form action="">
+              <input class="star star-5" id="star-5" type="radio" name="star"
+                     value="5" {{ "checked" if user_rating.rating == 5 else '' }}/>
+              <label class="star star-5" for="star-5"></label>
+              <input class="star star-4" id="star-4" type="radio" name="star"
+                     value="4" {{ "checked" if user_rating.rating == 4 else '' }}/>
+              <label class="star star-4" for="star-4"></label>
+              <input class="star star-3" id="star-3" type="radio" name="star"
+                     value="3" {{ "checked" if user_rating.rating == 3 else '' }}/>
+              <label class="star star-3" for="star-3"></label>
+              <input class="star star-2" id="star-2" type="radio" name="star"
+                     value="2" {{ "checked" if user_rating.rating == 2 else '' }}/>
+              <label class="star star-2" for="star-2"></label>
+              <input class="star star-1" id="star-1" type="radio" name="star"
+                     value="1" {{ "checked" if user_rating.rating == 1 else '' }}/>
+              <label class="star star-1" for="star-1"></label>
+            </form>
+          </div>
+
+        {% endif %}
+      </div>
+      <div class="plot">
+        {{ movie.plot }}
+      </div>
+    </div>
+  </div>
+
+  <div class="page-header">
+    <h2>Similar Movies</h2>
+    <hr/>
+    <div class="scrollmenu">
+
+      {% for similar_movie in movie.similar_movies[:10] %}
+        <a style="flex-grow: 1;" href="{{ "/movie/%d" % similar_movie.movieid }}" class="list-group-item">
+          <div style="display: flex;  width: 50%; margin-top: 5px; margin-bottom: 10px">
+            <div>
+              <img src="{{ "../static/images/movies/%d.jpg" % similar_movie.movieid }}"
+                   class="thumbnail"/>
+            </div>
+            <div style="margin-left: 10px; flex-grow: 1;">
+              <h6>{{ similar_movie.title }} ({{ similar_movie.year }})</h6>
+              <div>Score:
+                {% if not similar_movie.average_rating %}
+                  <span class="badge badge-pill badge-info">N/A</span>
+                {% elif similar_movie.average_rating < 3.0 %}
+                  <span class="badge badge-pill badge-warning">{{ similar_movie.average_rating }}</span>
                 {% else %}
-                    <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
-                    <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a></li>
+                  <span class="badge badge-pill badge-success">{{ similar_movie.average_rating }}</span>
                 {% endif %}
-            </ul>
-        </nav>
-    </div>
-
-    <div class="movieitembanner">
-        <h1 style="text-shadow: 3px 3px #FF0000;">{{ movie.title }}</h1>
-    </div>
-
-    <div style="display: flex; margin-top: 5px; margin-bottom: 10px">
-        <div>
-            <img src="{{ "../static/images/movies/%d.jpg" % movie.movieid }}" class="full"/>
-        </div>
-        <div style="margin-left: 10px; flex-grow: 1;">
-            <h2>({{ movie.year }})</h2>
-            <div><h4>Average:
-                {% if not movie.average_rating %}
-                    <span class="badge badge-pill badge-info">N/A</span>
-                {% elif movie.average_rating < 3.0 %}
-                    <span class="badge badge-pill badge-warning">
-                      {{ movie.average_rating }}
-                  </span>
-                {% else %}
-                    <span class="badge badge-pill badge-success">
-                      {{ movie.average_rating }}
-                  </span>
-                {% endif %}
-
-
-            </h4>
+              </div>
+              <div>Director: {{ similar_movie.director }}</div>
             </div>
-            <div><h4>Director: {{ movie.director }}</h4></div>
-            <div style="display: inline">
-                <h4 style="display: inline"><span>Genre(s):</span></h4>
-                {% for movie_genre in movie.genres %}
-                    <span>{{ movie_genre.genre.genre }}</span>
-                    {% if len(movie.genres) > 0 and loop.index0 < len(movie.genres) - 1 %}
-                        <span>,</span>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div style="margin-top: 15px">
-                {% if current_user.is_authenticated %}
-                    {#                    <p class="list-group-item-text">#}
-                    {#                        Your Rating:#}
-                    {#                        {% if user_rating %}#}
-                    {#                            {% if user_rating.rating  < 3.0 %}#}
-                    {#                                <span class="badge badge-pill badge-warning">#}
-                    {#                                  {{ user_rating.rating }}/5#}
-                    {#                                </span>#}
-                    {#                            {% else %}#}
-                    {#                                <span class="badge badge-pill badge-success">#}
-                    {#                                  {{ user_rating.rating }}/5#}
-                    {#                                </span>#}
-                    {#                            {% endif %}#}
-                    {#                        {% else %}#}
-                    {#                            <span class="badge badge-pill badge-info">N/A</span>#}
-                    {#                        {% endif %}#}
-                    {#                    </p>#}
-
-
-                    <div class="stars">
-                        <form action="">
-                            <input class="star star-5" id="star-5" type="radio" name="star"
-                                   value="5" {{ "checked" if user_rating.rating == 5 else '' }}/>
-                            <label class="star star-5" for="star-5"></label>
-                            <input class="star star-4" id="star-4" type="radio" name="star"
-                                   value="4" {{ "checked" if user_rating.rating == 4 else '' }}/>
-                            <label class="star star-4" for="star-4"></label>
-                            <input class="star star-3" id="star-3" type="radio" name="star"
-                                   value="3" {{ "checked" if user_rating.rating == 3 else '' }}/>
-                            <label class="star star-3" for="star-3"></label>
-                            <input class="star star-2" id="star-2" type="radio" name="star"
-                                   value="2" {{ "checked" if user_rating.rating == 2 else '' }}/>
-                            <label class="star star-2" for="star-2"></label>
-                            <input class="star star-1" id="star-1" type="radio" name="star"
-                                   value="1" {{ "checked" if user_rating.rating == 1 else '' }}/>
-                            <label class="star star-1" for="star-1"></label>
-                        </form>
-                    </div>
-
-                {% endif %}
-            </div>
-            <div class="plot">
-                {{ movie.plot }}
-            </div>
-        </div>
+          </div>
+        </a>
+      {% endfor %}
     </div>
+  </div>
 
-    <div class="page-header">
-        <h2>Similar Movies</h2>
-        <hr/>
-        <div class="scrollmenu">
-
-            {% for similar_movie in movie.similar_movies[:10] %}
-                <a style="flex-grow: 1;" href="{{ "/movie/%d" % similar_movie.movieid }}" class="list-group-item">
-                    <div style="display: flex;  width: 50%; margin-top: 5px; margin-bottom: 10px">
-                        <div>
-                            <img src="{{ "../static/images/movies/%d.jpg" % similar_movie.movieid }}"
-                                 class="thumbnail"/>
-                        </div>
-                        <div style="margin-left: 10px; flex-grow: 1;">
-                            <h6>{{ similar_movie.title }} ({{ similar_movie.year }})</h6>
-                            <div>Score:
-                                {% if not similar_movie.average_rating %}
-                                    <span class="badge badge-pill badge-info">N/A</span>
-                                {% elif similar_movie.average_rating < 3.0 %}
-                                    <span class="badge badge-pill badge-warning">
-                                      {{ similar_movie.average_rating }}
-                                  </span>
-                                {% else %}
-                                    <span class="badge badge-pill badge-success">
-                                      {{ similar_movie.average_rating }}
-                                  </span>
-                                {% endif %}
-                            </div>
-                            <div>Director: {{ similar_movie.director }}</div>
-                        </div>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
-    </div>
-
-    <footer class="website">
-        <p>&copy; Olsi Spahiu, 2017</p>
-    </footer>
+  <footer class="website">
+    <p>&copy; Olsi Spahiu, 2017</p>
+  </footer>
 </div>
 </body>
-
 </html>

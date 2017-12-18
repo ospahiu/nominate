@@ -7,7 +7,7 @@ from nominate.tasks import make_celery
 
 app = Flask(__name__)
 app.config.from_object("config")
-# Load default config and override config from an environment variable
+# Load default config and override config from an environment variable.
 app.config.update(dict(
     DATABASE=os.path.join(app.root_path, app.config["DATABASE_NAME"]),
 ))

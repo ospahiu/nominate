@@ -2,64 +2,63 @@
 <html lang="en">
 
 <head>
-    <title>Nominate.com</title>
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-    <link href="../static/css/style.css" rel="stylesheet">
-    <link rel="shortcut icon" href="../static/images/favicon.ico">
+  <title>Nominate.com</title>
+  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+  <link href="../static/css/style.css" rel="stylesheet">
+  <link rel="shortcut icon" href="../static/images/favicon.ico">
 </head>
 <body>
 <div class="container" style="margin-top: 40px">
-    <img src="../static/images/logo.png" class="logo"/>
-    <div class="header">
-        <nav>
-            <ul style="position:relative;" class="nav nav-pills" role="tablist">
-                <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
-                <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
-                {% if current_user.is_authenticated %}
-                    <li role="presentation"><a class="more" role="tab" href="/dashboard">Dashboard</a></li>
-                    <li role="presentation" class="active"><a class="more" href="/logout">Logout</a></li>
-                    <li style="position:absolute;right: 0;" role="presentation">
-                        <div style="margin-top: 12px; float: right;">
-                            <img style="display: inline-block;" src="../static/images/user-icon.png" class="usericon"/>
-                            <span style="margin-left: 10px; margin-top: 2px; float: right;">{{ current_user.username }}</span>
-                        </div>
-                    </li>
-                {% else %}
-                    <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
-                    <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
-
-    <div class="homebanner">
-        <h1 style="text-shadow: 3px 3px #840fa8;">Get Movie Recommendations</h1>
-        <p class="lead"></p>
-        {% if not current_user.is_authenticated %}
-            <p><a class="btn btn-lg btn-primary" href="/showSignUp" role="button">Sign up today</a>
+  <img src="../static/images/logo.png" class="logo"/>
+  <div class="header">
+    <nav>
+      <ul style="position:relative;" class="nav nav-pills" role="tablist">
+        <li role="presentation" class="active"><a class="more" role="tab" href="/">Home</a></li>
+        <li role="presentation" class="active"><a class="more" role="tab" href="/movies">Movies</a></li>
+        {% if current_user.is_authenticated %}
+          <li role="presentation"><a class="more" role="tab" href="/dashboard">Dashboard</a></li>
+          <li role="presentation" class="active"><a class="more" href="/logout">Logout</a></li>
+          <li style="position:absolute;right: 0;" role="presentation">
+            <div style="margin-top: 12px; float: right;">
+              <img style="display: inline-block;" src="../static/images/user-icon.png" class="usericon"/>
+              <span style="margin-left: 10px; margin-top: 2px; float: right;">{{ current_user.username }}</span>
+            </div>
+          </li>
+        {% else %}
+          <li role="presentation"><a class="more" role="tab" href="/showSignIn">Sign In</a></li>
+          <li role="presentation"><a class="more" role="tab" href="/showSignUp">Sign Up</a></li>
         {% endif %}
-        </p>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="homebanner">
+    <h1 style="text-shadow: 3px 3px #840fa8;">Get Movie Recommendations</h1>
+    <p class="lead"></p>
+    {% if not current_user.is_authenticated %}
+      <p><a class="btn btn-lg btn-primary" href="/showSignUp" role="button">Sign up today</a>
+    {% endif %}
+    </p>
+  </div>
+
+
+  <div class="row marketing">
+    <div class="col-lg-6">
+      <h4>Rate Movies</h4>
+      <p>Look through our catalogue of movies, and rate them!</p>
+
+      <h4>Get Recommendations</h4>
+      <p>See what other movies you might like, based on personalized recommendations.</p>
+
+      <h4>User Reviews</h4>
+      <p>See what other users have to say about the movies.</p>
     </div>
+  </div>
 
-
-    <div class="row marketing">
-        <div class="col-lg-6">
-            <h4>Rate Movies</h4>
-            <p>Look through our catalogue of movies, and rate them!</p>
-
-            <h4>Get Recommendations</h4>
-            <p>See what other movies you might like, based on personalized recommendations.</p>
-
-            <h4>User Reviews</h4>
-            <p>See what other users have to say about the movies.</p>
-        </div>
-    </div>
-
-    <footer class="website">
-        <p>&copy; Olsi Spahiu, 2017</p>
-    </footer>
+  <footer class="website">
+    <p>&copy; Olsi Spahiu, 2017</p>
+  </footer>
 </div>
 </body>
-
 </html>
