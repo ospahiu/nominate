@@ -1,4 +1,5 @@
 ![Alt text](/nominate/static/images/logo.png?raw=true "Logo")
+![Alt text](/nominate/static/images/screenshots/demo.gif?raw=true "Demo")
 
 # Nominate
 Nominate is a Movie recommendation web application that allows users to view movies, rate them, and get personalized predictions
@@ -33,10 +34,11 @@ catalogue of various titles. The views are all built with Jinja's web templating
 custom views per user. 
 
 The core of the application rests on the database design which links users and movies and vice-versa via a `Rating` table. 
-This table contains all user information (Please see the database diagram under Screenshots). Similarity computation and predictive 
-ratings can then be executed from the data contained inside of the user's ratings and movie's ratings. This system is 
-abstracted away with a Database session manager provided by Flask, as well as utilizing SQL-Alchemy to wrap each of the 
-models for easy declarative database interactions.
+This table contains all user information (As shown below):
+
+![Alt text](/nominate/static/images/screenshots/database_schema.png?raw=true "Demo")
+
+Similarity computation and predictive ratings can then be executed from the data contained inside of the user's ratings and movie's ratings. This system is abstracted away with a Database session manager provided by Flask, as well as utilizing SQL-Alchemy to wrap each of the models for easy declarative database interactions.
 
 In terms of the actual recommendation calculations; a model-based collaborative filtering algorithm was chosen 
 since this allows Nominate to cache the results and store this state permanently inside of the database. The algorithm 
@@ -116,4 +118,20 @@ $ redis-server /usr/local/etc/redis.conf
 
 ## Screenshots:
 
+### Movies View
+![Alt text](/nominate/static/images/screenshots/movies_view.png?raw=true "Demo")
 
+### Customized Predictions
+![Alt text](/nominate/static/images/screenshots/customized_predictions.png?raw=true "Demo")
+
+### Dashboard View
+![Alt text](/nominate/static/images/screenshots/dashboard.png?raw=true "Demo")
+
+### Movie Item View
+![Alt text](/nominate/static/images/screenshots/movie_item_view.png?raw=true "Demo")
+
+### Search Results
+![Alt text](/nominate/static/images/screenshots/search_results.png?raw=true "Demo")
+
+### Sign In Page
+![Alt text](/nominate/static/images/screenshots/signin_view.png?raw=true "Demo")
