@@ -96,6 +96,7 @@ $ bower install
 ### Start up Nominate application and Task queue
 
 ```
+$ export FLASK_APP=nominate
 $ flask run
 $ celery -A nominate.celery worker` # To kill celery workers: `$ pkill -f "celery worker"
 $ redis-server /usr/local/etc/redis.conf
