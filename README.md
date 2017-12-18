@@ -1,12 +1,7 @@
-*** Assignment 3 README - PLEASE READ ***
-@Author(s) Olsi Spahiu, Frank Vumbaca
-@email(s)  olsi.spahiu@ryerson.ca, fvumbaca@ryerson.ca
-@StdID     500569564, 500564107
-@date      November 28th, 2017
-@brief     Assignment 3 README.
+![Alt text](/nominate/static/images/logo.png?raw=true "Logo")
 
 # Nominate
-Movie recommendation web application that allows users to view movies, rate them, and get personalized predictions
+Nominate is a Movie recommendation web application that allows users to view movies, rate them, and get personalized predictions
 based on their rating behaviour, as well as the ratings of other users! The system becomes more accurate overtime as
 the increase of ratings helps steer recommendations and predictions on what users might like the most.
 
@@ -49,21 +44,21 @@ since this allows me to cache my results, and store this state permanently insid
 iterates every single movie, and then iterates over every single movie again to form a nested for-loop. From here, 
 ratings where users have given TO BOTH movies are aggregated and formed as vectors of user ratings per movie, i.e.:
  
+```
 movie_ratings_i = [(User 1, 1), (User 2, 4), (User 3, 3), (User 4, 5), (User 5, 2), (User 6, 3)]
 movie_ratings_j = [(User 1, 4), (User 2, 3), (User 3, 3), (User 4, 1), (User 5, 5), (User 6, 5)]
+```
  
 From here the score is calculated using the cosine similarity formula  (standard item-to-item implementation). The 
 similarity matrix is then stored as rows of the following data shape:
 
-(Movie_i, Movie_j, Cosine Similarity Score)
+`(Movie_i, Movie_j, Cosine Similarity Score)`
 
 To the Similarity table as shown in the screenshots. The predictions are then made by accessing our newly created matrix
 and finding the movies which users have not rated, and from there predicting the rating they might give them based on 
 other movies they've rated. These ratings are then multiplied by the similarity score where they are essentially given
 a factor based on similarity score. The results are normalized by being divided by the sum of similarities. These
-functions follow a very standard item-to-item implementation as described in this paper: 
-
-http://files.grouplens.org/papers/www10_sarwar.pdf
+functions follow a very standard item-to-item implementation as described in this [white paper](http://files.grouplens.org/papers/www10_sarwar.pdf).
 
 These prediction results are stored in a PredictiveRating model in a similar way to the similarity score, and can be
 stored permanently; an nice upside that memory based collaborative filtering approaches don't have. To run the 
@@ -82,80 +77,30 @@ The rest of the application logic is there to support web application features i
 - Setting up proper relationships
 - UI Templating
 - Jquery & Ajax submissions
-- REST API for GET/POST requests
+- REST API for `GET/POST` requests
 
 ## Run Program
 
-Unzip cps842f17_prj_spahiu.zip
-Go inside of the project root `/cps842f17_prj_spahiu` in a shell. 
-Run the following below:
-
-### First steps (assuming all dependencies are installed).
-
-$ cd nominate 
-$ export FLASK_APP=nominate
-$ flask run
+Inside of the project root `/path/to/folder/nominate`, run the following below:
 
 ### Installation
 
-- `$ pip3 install -r requirements.txt`
-- `$ yarn install`
-- `$ bower install`
+```
+$ pip3 install -e .
+$ pip install -r requirements.txt
+$ yarn install
+$ bower install
+```
 
-### Start up app and Task queues
+### Start up Nominate application and Task queue
 
-- `$ flask run`
-- `$ celery -A nominate.celery worker` / you want to kill celery workers: `$ pkill -f "celery worker"`
-- `$ redis-server /usr/local/etc/redis.conf`
+```
+$ flask run
+$ celery -A nominate.celery worker` # To kill celery workers: `$ pkill -f "celery worker"
+$ redis-server /usr/local/etc/redis.conf
+```
 
-Type in `http://127.0.0.1:5000/` in your browser to view the app.
-
-## Package Contents:
-.
-├── README.md
-├── bower.json
-├── config.py
-├── gulpfile.js
-├── nominate
-│   ├── __init__.py
-│   ├── database.py
-│   ├── models.py
-│   ├── nominate.db
-│   ├── similarity.py
-│   ├── static
-│   │   ├── css
-│   │   │   ├── signup.css
-│   │   │   └── style.css
-│   │   ├── images
-│   │   │   ├── favicon.ico
-│   │   │   ├── logo.png
-│   │   │   ├── movies
-│   │   │   │   ├── [Many movie poster images]
-│   │   │   ├── search-icon.png
-│   │   │   └── user-icon.png
-│   │   └── scripts
-│   │       ├── js
-│   │       │   └── main.js
-│   │       └── jsx
-│   │           └── main.js
-│   ├── tasks.py
-│   ├── templates
-│   │   ├── about.html
-│   │   ├── dashboard.html
-│   │   ├── error.html
-│   │   ├── index.html
-│   │   ├── movie.html
-│   │   ├── movies.html
-│   │   ├── results.html
-│   │   ├── signin.html
-│   │   └── signup.html
-│   ├── utilities.py
-│   └── views.py
-├── package.json
-├── requirements.txt
-├── setup.py
-└── yarn.lock
-
+- Type in `http://127.0.0.1:5000/` in your browser.
 
 ## Libraries Used:
 
@@ -169,6 +114,5 @@ Type in `http://127.0.0.1:5000/` in your browser to view the app.
 - Celery 4.1.0
 - SQLite format 3
 - Bower 1.8.2
-- pip3 9.0.1
 
-If you have any questions, please feel free to contact olsi.spahiu@ryerson.ca
+## Screenshots:
